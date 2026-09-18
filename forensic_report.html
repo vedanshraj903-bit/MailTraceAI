@@ -1,0 +1,293 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MailTraceAI Forensic Report</title>
+<style>
+* { box-sizing: border-box; }
+body {
+    margin: 0;
+    padding: 40px;
+    background: #080b12;
+    color: #e8edf5;
+    font-family: Arial, Helvetica, sans-serif;
+    line-height: 1.5;
+}
+.report { max-width: 1100px; margin: 0 auto; }
+.header {
+    padding: 30px;
+    margin-bottom: 25px;
+    border: 1px solid #263447;
+    border-radius: 14px;
+    background: #0d131d;
+}
+.header h1 { margin: 0; font-size: 30px; }
+.header p { margin: 8px 0 0; color: #8795a9; }
+.section {
+    margin-top: 20px;
+    padding: 25px;
+    border: 1px solid #263447;
+    border-radius: 14px;
+    background: #0d131d;
+}
+.section h2 { margin-top: 0; margin-bottom: 18px; font-size: 19px; }
+.section h3 { margin-top: 25px; }
+.grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 15px;
+}
+.card {
+    padding: 15px;
+    border-radius: 10px;
+    background: #111a26;
+    border: 1px solid #202e40;
+}
+.label {
+    display: block;
+    margin-bottom: 5px;
+    color: #718197;
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
+.value { word-break: break-word; }
+table { width: 100%; border-collapse: collapse; }
+th {
+    padding: 12px;
+    text-align: left;
+    color: #718197;
+    font-size: 10px;
+    letter-spacing: 1px;
+    border-bottom: 1px solid #263447;
+}
+td {
+    padding: 12px;
+    font-size: 13px;
+    border-bottom: 1px solid #192535;
+    word-break: break-word;
+}
+.muted { color: #718197; }
+.hash {
+    padding: 12px;
+    border-radius: 8px;
+    background: #111a26;
+    border: 1px solid #202e40;
+    font-family: Consolas, "Courier New", monospace;
+    word-break: break-all;
+}
+ul { padding-left: 20px; }
+li { margin-bottom: 12px; }
+@media print {
+    body { padding: 0; background: white; color: black; }
+    .section, .header { background: white; border-color: #cccccc; color: black; }
+}
+@media (max-width: 700px) {
+    body { padding: 15px; }
+    .grid { grid-template-columns: 1fr; }
+    table { display: block; overflow-x: auto; }
+}
+</style>
+</head>
+<body>
+<div class="report">
+
+<div class="header">
+    <h1>MailTraceAI</h1>
+    <p>AI-Powered Email Threat Detection &amp; Forensic Intelligence Report</p>
+    <p>Report Version: 1.1</p>
+    <p>Generated: 2026-09-18T05:42:27.509641+00:00</p>
+</div>
+
+<section class="section">
+    <h2>1. Case Summary</h2>
+    <div class="grid">
+        <div class="card">
+            <span class="label">Sender</span>
+            <div class="value">HDFC Bank InstaAlerts &lt;alerts@hdfcbank.bank.in&gt;</div>
+        </div>
+        <div class="card">
+            <span class="label">Recipient</span>
+            <div class="value">VEDANSHRAJ903@GMAIL.COM</div>
+        </div>
+        <div class="card">
+            <span class="label">Subject</span>
+            <div class="value">❗  You have done a UPI txn. Check details!</div>
+        </div>
+        <div class="card">
+            <span class="label">Message ID</span>
+            <div class="value">&lt;6aabf67d.2288c3e7.2d4ce6.82b7SMTPIN_ADDED_BROKEN@mx.google.com&gt;</div>
+        </div>
+        <div class="card">
+            <span class="label">Risk Score</span>
+            <div class="value">58 / 100</div>
+        </div>
+        <div class="card">
+            <span class="label">Verdict</span>
+            <div class="value">MEDIUM RISK</div>
+        </div>
+        <div class="card">
+            <span class="label">AI Prediction</span>
+            <div class="value">spam</div>
+        </div>
+        <div class="card">
+            <span class="label">Spam Probability</span>
+            <div class="value">89.46%</div>
+        </div>
+    </div>
+</section>
+
+<section class="section">
+    <h2>2. Email Authentication</h2>
+    
+    <table>
+        <thead>
+            <tr><th>Mechanism</th><th>Result</th></tr>
+        </thead>
+        <tbody>
+            <tr><td>SPF</td><td>PASS</td></tr><tr><td>DKIM</td><td>PASS</td></tr><tr><td>DMARC</td><td>PASS</td></tr><tr><td>ARC</td><td>AVAILABLE</td></tr><tr><td>Authentication-Results</td><td>mx.google.com;       dkim=pass header.i=@hdfcbank.bank.in header.s=acls01 header.b=IawsEBVn;       dkim=pass header.i=@aclmobile.net header.s=5nXKKHgBnyGAcLwvMLZIq header.b=przL79dS;       spf=pass (google.com: domain of a.1789654653052574799.22228.1156.5.1.0.0.1@comm.hdfcbank.bank.in designates 103.54.236.13 as permitted sender) smtp.mailfrom=A.1789654653052574799.22228.1156.5.1.0.0.1@comm.hdfcbank.bank.in;       dmarc=pass (p=REJECT sp=REJECT dis=NONE) header.from=hdfcbank.bank.in</td></tr>
+        </tbody>
+    </table>
+    
+</section>
+
+<section class="section">
+    <h2>3. Security Findings</h2>
+    
+    <table>
+        <thead>
+            <tr><th>Signal</th><th>Severity</th><th>Description</th></tr>
+        </thead>
+        <tbody>
+            <tr><td>FROM_RETURN_PATH_MISMATCH</td><td>MEDIUM</td><td>From and Return-Path domains do not match.</td></tr>
+        </tbody>
+    </table>
+    
+</section>
+
+<section class="section">
+    <h2>4. Indicators of Compromise</h2>
+    <h3>IP Addresses</h3>
+    
+    <table>
+        <thead>
+            <tr><th>IP Address</th></tr>
+        </thead>
+        <tbody>
+            <tr><td>103.54.236.13</td></tr><tr><td>5.1.0.0</td></tr>
+        </tbody>
+    </table>
+    
+    <h3>Domains</h3>
+    
+    <table>
+        <thead>
+            <tr><th>Domain</th></tr>
+        </thead>
+        <tbody>
+            <tr><td>GMAIL.COM</td></tr><tr><td>GMAIL.COM0917194732533</td></tr><tr><td>comm.hdfcbank.bank.in</td></tr><tr><td>gmail.com</td></tr><tr><td>hdfcbank.bank.in</td></tr><tr><td>img.pinchappmail=</td></tr><tr><td>img.pinchappmails.com</td></tr><tr><td>mx.google.com</td></tr><tr><td>trkt.aclemails.com</td></tr><tr><td>wgjpss.stripocdn.email</td></tr>
+        </tbody>
+    </table>
+    
+    <h3>URLs</h3>
+    
+    <table>
+        <thead>
+            <tr><th>URL</th></tr>
+        </thead>
+        <tbody>
+            <tr><td>https://img.pinchappmail=</td></tr><tr><td>https://img.pinchappmails.com/hdfc/images/202=</td></tr><tr><td>https://trkt.aclemails.com/v1/r/87Mkwm%2BZDtanQuDEuhuhwMWbhD=</td></tr><tr><td>https://trkt.aclemails.com/v1/r/QtdoI5ImZdEwMjliCcjeYY1FJWgxl0xU7Qv8X=</td></tr><tr><td>https://trkt.aclemails.com/v1/w/wZstUCBYs5vfV1Qwa8zu0fmG=</td></tr><tr><td>https://wgjpss.stripocdn.email/content/guids/CABINET_d17330eb5cbe5af68cf444=</td></tr>
+        </tbody>
+    </table>
+    
+</section>
+
+<section class="section">
+    <h2>5. Infrastructure Intelligence</h2>
+    
+    <table>
+        <thead>
+            <tr><th>IP Address</th><th>Country</th><th>Code</th><th>ASN</th><th>Network</th></tr>
+        </thead>
+        <tbody>
+            <tr><td>103.54.236.13</td><td>India</td><td>IN</td><td>AS16509</td><td>Amazon.com, Inc.</td></tr><tr><td>5.1.0.0</td><td>Ukraine</td><td>UA</td><td>AS31520</td><td>Datagroup Retail</td></tr>
+        </tbody>
+    </table>
+    
+    <p class="muted">
+        Infrastructure geolocation represents observable network infrastructure
+        and should not be interpreted as proof of an attacker's physical location
+        or identity.
+    </p>
+</section>
+
+<section class="section">
+    <h2>6. Threat Intelligence</h2>
+    
+    <table>
+        <thead>
+            <tr><th>Metric</th><th>Value</th></tr>
+        </thead>
+        <tbody>
+            <tr><td>Status</td><td>NOT_CONFIGURED</td></tr><tr><td>IPs Checked</td><td>2</td></tr><tr><td>Domains Checked</td><td>10</td></tr><tr><td>URLs Checked</td><td>6</td></tr>
+        </tbody>
+    </table>
+    
+    <p class="muted">
+        Threat intelligence provider results depend on the availability and
+        configuration of external API credentials.
+    </p>
+</section>
+
+<section class="section">
+    <h2>7. Investigation Graph</h2>
+    
+    <table>
+        <thead>
+            <tr><th>Metric</th><th>Value</th></tr>
+        </thead>
+        <tbody>
+            <tr><td>Graph Version</td><td>1.2</td></tr><tr><td>Nodes</td><td>26</td></tr><tr><td>Relationships</td><td>19</td></tr>
+        </tbody>
+    </table>
+    
+</section>
+
+<section class="section">
+    <h2>8. Risk Assessment</h2>
+    <div class="grid">
+        <div class="card">
+            <span class="label">Risk Score</span>
+            <div class="value">58 / 100</div>
+        </div>
+        <div class="card">
+            <span class="label">Verdict</span>
+            <div class="value">MEDIUM RISK</div>
+        </div>
+    </div>
+    <h3>Risk Reasons</h3>
+    <ul><li><strong>ML — ELEVATED_SPAM_PROBABILITY (28 points)</strong><br>ML model assigned 89.46% spam probability.</li><li><strong>SECURITY_ANALYZER — FROM_RETURN_PATH_MISMATCH (15 points)</strong><br>From and Return-Path domains do not match.</li><li><strong>SENDER_CONSISTENCY — FROM_RETURN_PATH_MISMATCH (15 points)</strong><br>From and Return-Path domains do not match.</li></ul>
+</section>
+
+<section class="section">
+    <h2>9. Evidence Integrity</h2>
+    <p>Original Email SHA-256</p>
+    <div class="hash">df01c8c5e08254e12615d5e7da38c345613c7cd8427ec7fe8fd33f19276ca0b7</div>
+    <p>Parser Timestamp: 2026-09-18T05:42:25.850354+00:00</p>
+</section>
+
+<section class="section">
+    <p class="muted">
+        This report summarizes automated analysis performed by MailTraceAI.
+        Infrastructure geolocation represents observable network infrastructure
+        and should not be interpreted as proof of an attacker's physical location
+        or identity.
+    </p>
+</section>
+
+</div>
+</body>
+</html>

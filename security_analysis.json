@@ -1,0 +1,165 @@
+{
+    "tool": "MailTraceAI",
+    "analysis_version": "2.0",
+    "analysis_timestamp": "2026-09-08T18:45:00.065313+00:00",
+    "email_file": "C:\\Users\\Farzan\\Desktop\\MailTraceAI\\samples\\spam_test",
+    "evidence": {
+        "original_email_sha256": "8f6272eaef144851699b0170603dad704a5dbc943466f92ab630e0d6c4d5b4b8"
+    },
+    "identity": {
+        "from": "Slim Down <sabrina@mx3.1premio.com>",
+        "from_email": "sabrina@mx3.1premio.com",
+        "to": "zzzz@spamassassin.taint.org",
+        "cc": null,
+        "reply_to": null,
+        "return_path": "<sabrina@mx3.1premio.com>",
+        "subject": "Guaranteed to lose 10-12 lbs in 30 days                          11.150",
+        "message_id": "<9a63c01c249e0$e5a9d610$1106fea9@freeyankeedom.com>",
+        "date": "Thu, 22 Aug 2002 07:36:19 -0600"
+    },
+    "routing": {
+        "received_header_count": 4,
+        "received_headers": [
+            "from localhost (localhost [127.0.0.1])\tby phobos.labs.spamassassin.taint.org (Postfix) with ESMTP id 1E90847C66\tfor <zzzz@localhost>; Thu, 22 Aug 2002 09:44:02 -0400 (EDT)",
+            "from mail.webnote.net [193.120.211.219]\tby localhost with POP3 (fetchmail-5.9.0)\tfor zzzz@localhost (single-drop); Thu, 22 Aug 2002 14:44:03 +0100 (IST)",
+            "from email.qves.com (email1.qves.net [209.63.151.251] (may be forged))\tby webnote.net (8.9.3/8.9.3) with ESMTP id OAA04953\tfor <zzzz@spamassassin.taint.org>; Thu, 22 Aug 2002 14:37:23 +0100",
+            "from qvp0086 ([169.254.6.17]) by email.qves.com with Microsoft SMTPSVC(5.0.2195.2966);\t Thu, 22 Aug 2002 07:36:20 -0600"
+        ],
+        "relay_path": [
+            {
+                "hop": 1,
+                "ip": "169.254.6.17",
+                "classification": "LINK-LOCAL",
+                "raw": "from qvp0086 ([169.254.6.17]) by email.qves.com with Microsoft SMTPSVC(5.0.2195.2966);\t Thu, 22 Aug 2002 07:36:20 -0600"
+            },
+            {
+                "hop": 2,
+                "ip": "209.63.151.251",
+                "classification": "PUBLIC",
+                "raw": "from email.qves.com (email1.qves.net [209.63.151.251] (may be forged))\tby webnote.net (8.9.3/8.9.3) with ESMTP id OAA04953\tfor <zzzz@spamassassin.taint.org>; Thu, 22 Aug 2002 14:37:23 +0100"
+            },
+            {
+                "hop": 3,
+                "ip": "193.120.211.219",
+                "classification": "PUBLIC",
+                "raw": "from mail.webnote.net [193.120.211.219]\tby localhost with POP3 (fetchmail-5.9.0)\tfor zzzz@localhost (single-drop); Thu, 22 Aug 2002 14:44:03 +0100 (IST)"
+            },
+            {
+                "hop": 4,
+                "ip": "127.0.0.1",
+                "classification": "LOOPBACK",
+                "raw": "from localhost (localhost [127.0.0.1])\tby phobos.labs.spamassassin.taint.org (Postfix) with ESMTP id 1E90847C66\tfor <zzzz@localhost>; Thu, 22 Aug 2002 09:44:02 -0400 (EDT)"
+            }
+        ],
+        "ips": [
+            {
+                "ip": "127.0.0.1",
+                "classification": "LOOPBACK"
+            },
+            {
+                "ip": "169.254.6.17",
+                "classification": "LINK-LOCAL"
+            },
+            {
+                "ip": "193.120.211.219",
+                "classification": "PUBLIC"
+            },
+            {
+                "ip": "209.63.151.251",
+                "classification": "PUBLIC"
+            }
+        ],
+        "public_infrastructure_ips": [
+            "193.120.211.219",
+            "209.63.151.251"
+        ]
+    },
+    "authentication": {
+        "authentication_results": null,
+        "spf": "NOT_AVAILABLE",
+        "dkim": "NOT_AVAILABLE",
+        "dmarc": "NOT_AVAILABLE",
+        "arc": "NOT_AVAILABLE"
+    },
+    "sender_consistency": {
+        "from_reply_to": "NOT_AVAILABLE",
+        "from_return_path": "MATCH"
+    },
+    "urls": {
+        "total": 6,
+        "http_count": 6,
+        "https_count": 0,
+        "at_symbol_count": 1,
+        "details": [
+            {
+                "url": "http://www.adclick.ws/p.cfm?o=245&s=pk002",
+                "scheme": "http",
+                "domain": "www.adclick.ws",
+                "contains_at_symbol": false
+            },
+            {
+                "url": "http://www.adclick.ws/p.cfm?o=249&s=pk007",
+                "scheme": "http",
+                "domain": "www.adclick.ws",
+                "contains_at_symbol": false
+            },
+            {
+                "url": "http://www.adclick.ws/p.cfm?o=259&s=pk007",
+                "scheme": "http",
+                "domain": "www.adclick.ws",
+                "contains_at_symbol": false
+            },
+            {
+                "url": "http://www.adclick.ws/p.cfm?o=283&s=pk007",
+                "scheme": "http",
+                "domain": "www.adclick.ws",
+                "contains_at_symbol": false
+            },
+            {
+                "url": "http://www.adclick.ws/p.cfm?o=315&s=pk007",
+                "scheme": "http",
+                "domain": "www.adclick.ws",
+                "contains_at_symbol": false
+            },
+            {
+                "url": "http://www.qves.com/trim/?zzzz@spamassassin.taint.org%7C17%7C308417",
+                "scheme": "http",
+                "domain": "www.qves.com",
+                "contains_at_symbol": true
+            }
+        ],
+        "domains": [
+            "www.adclick.ws",
+            "www.qves.com"
+        ]
+    },
+    "domains": [
+        "freeyankeedom.com",
+        "localhost.spamassassin.taint.org",
+        "mx3.1premio.com",
+        "spamassassin.taint.org",
+        "www.adclick.ws",
+        "www.qves.com"
+    ],
+    "attachments": {
+        "count": 0,
+        "items": []
+    },
+    "security_signals": {
+        "total": 2,
+        "signals": [
+            {
+                "type": "HTTP_URLS",
+                "severity": "LOW",
+                "description": "6 URL(s) use HTTP instead of HTTPS.",
+                "count": 6
+            },
+            {
+                "type": "URL_AT_SYMBOL",
+                "severity": "MEDIUM",
+                "description": "1 URL(s) contain an @ character.",
+                "count": 1
+            }
+        ]
+    }
+}

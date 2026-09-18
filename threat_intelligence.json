@@ -1,0 +1,130 @@
+{
+    "tool": "MailTraceAI",
+    "threat_intelligence_version": "3.0",
+    "analysis_timestamp": "2026-09-08T18:51:08.261759+00:00",
+    "email": {
+        "file": "C:\\Users\\Farzan\\Desktop\\MailTraceAI\\samples\\spam_test",
+        "sha256": "8f6272eaef144851699b0170603dad704a5dbc943466f92ab630e0d6c4d5b4b8"
+    },
+    "ip_intelligence": {
+        "total_ips_checked": 2,
+        "results": [
+            {
+                "ip": "193.120.211.219",
+                "virustotal": {
+                    "status": "NOT_CONFIGURED",
+                    "ip": "193.120.211.219"
+                },
+                "abuseipdb": {
+                    "status": "NOT_CONFIGURED",
+                    "ip": "193.120.211.219"
+                }
+            },
+            {
+                "ip": "209.63.151.251",
+                "virustotal": {
+                    "status": "NOT_CONFIGURED",
+                    "ip": "209.63.151.251"
+                },
+                "abuseipdb": {
+                    "status": "NOT_CONFIGURED",
+                    "ip": "209.63.151.251"
+                }
+            }
+        ]
+    },
+    "domain_intelligence": {
+        "total_domains_checked": 6,
+        "results": [
+            {
+                "domain": "www.adclick.ws",
+                "virustotal": {
+                    "status": "NOT_CONFIGURED",
+                    "domain": "www.adclick.ws"
+                }
+            },
+            {
+                "domain": "www.qves.com",
+                "virustotal": {
+                    "status": "NOT_CONFIGURED",
+                    "domain": "www.qves.com"
+                }
+            },
+            {
+                "domain": "freeyankeedom.com",
+                "virustotal": {
+                    "status": "NOT_CONFIGURED",
+                    "domain": "freeyankeedom.com"
+                }
+            },
+            {
+                "domain": "localhost.spamassassin.taint.org",
+                "virustotal": {
+                    "status": "NOT_CONFIGURED",
+                    "domain": "localhost.spamassassin.taint.org"
+                }
+            },
+            {
+                "domain": "mx3.1premio.com",
+                "virustotal": {
+                    "status": "NOT_CONFIGURED",
+                    "domain": "mx3.1premio.com"
+                }
+            },
+            {
+                "domain": "spamassassin.taint.org",
+                "virustotal": {
+                    "status": "NOT_CONFIGURED",
+                    "domain": "spamassassin.taint.org"
+                }
+            }
+        ]
+    },
+    "url_intelligence": {
+        "total_urls_checked": 6,
+        "results": [
+            {
+                "url": "http://www.adclick.ws/p.cfm?o=245&s=pk002",
+                "virustotal": {
+                    "status": "NOT_CONFIGURED",
+                    "url": "http://www.adclick.ws/p.cfm?o=245&s=pk002"
+                }
+            },
+            {
+                "url": "http://www.adclick.ws/p.cfm?o=249&s=pk007",
+                "virustotal": {
+                    "status": "NOT_CONFIGURED",
+                    "url": "http://www.adclick.ws/p.cfm?o=249&s=pk007"
+                }
+            },
+            {
+                "url": "http://www.adclick.ws/p.cfm?o=259&s=pk007",
+                "virustotal": {
+                    "status": "NOT_CONFIGURED",
+                    "url": "http://www.adclick.ws/p.cfm?o=259&s=pk007"
+                }
+            },
+            {
+                "url": "http://www.adclick.ws/p.cfm?o=283&s=pk007",
+                "virustotal": {
+                    "status": "NOT_CONFIGURED",
+                    "url": "http://www.adclick.ws/p.cfm?o=283&s=pk007"
+                }
+            },
+            {
+                "url": "http://www.adclick.ws/p.cfm?o=315&s=pk007",
+                "virustotal": {
+                    "status": "NOT_CONFIGURED",
+                    "url": "http://www.adclick.ws/p.cfm?o=315&s=pk007"
+                }
+            },
+            {
+                "url": "http://www.qves.com/trim/?zzzz@spamassassin.taint.org%7C17%7C308417",
+                "virustotal": {
+                    "status": "NOT_CONFIGURED",
+                    "url": "http://www.qves.com/trim/?zzzz@spamassassin.taint.org%7C17%7C308417"
+                }
+            }
+        ]
+    }
+}

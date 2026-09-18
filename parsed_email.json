@@ -1,0 +1,95 @@
+{
+    "from": "heather.dunton@enron.com",
+    "to": "k..allen@enron.com",
+    "cc": null,
+    "reply_to": null,
+    "return_path": null,
+    "subject": "RE: West Position",
+    "date": "Fri, 07 Dec 2001 10:06:42 -0800",
+    "message_id": "<16159836.1075855377439.JavaMail.evans@thyme>",
+    "headers": [
+        {
+            "name": "Message-ID",
+            "value": "<16159836.1075855377439.JavaMail.evans@thyme>"
+        },
+        {
+            "name": "Date",
+            "value": "Fri, 07 Dec 2001 10:06:42 -0800"
+        },
+        {
+            "name": "From",
+            "value": "heather.dunton@enron.com"
+        },
+        {
+            "name": "To",
+            "value": "k..allen@enron.com"
+        },
+        {
+            "name": "Subject",
+            "value": "RE: West Position"
+        },
+        {
+            "name": "Mime-Version",
+            "value": "1.0"
+        },
+        {
+            "name": "Content-Type",
+            "value": "text/plain; charset=\"us-ascii\""
+        },
+        {
+            "name": "Content-Transfer-Encoding",
+            "value": "7bit"
+        },
+        {
+            "name": "X-From",
+            "value": "Dunton, Heather </O=ENRON/OU=NA/CN=RECIPIENTS/CN=HDUNTON>"
+        },
+        {
+            "name": "X-To",
+            "value": "Allen, Phillip K. </O=ENRON/OU=NA/CN=RECIPIENTS/CN=Pallen>"
+        },
+        {
+            "name": "X-cc",
+            "value": ""
+        },
+        {
+            "name": "X-bcc",
+            "value": ""
+        },
+        {
+            "name": "X-Folder",
+            "value": "\\Phillip_Allen_Jan2002_1\\Allen, Phillip K.\\Inbox"
+        },
+        {
+            "name": "X-Origin",
+            "value": "Allen-P"
+        },
+        {
+            "name": "X-FileName",
+            "value": "pallen (Non-Privileged).pst"
+        }
+    ],
+    "received": [],
+    "authentication": {
+        "authentication_results": null,
+        "dkim_signature": null,
+        "arc_seal": null,
+        "arc_message_signature": null,
+        "arc_authentication_results": null
+    },
+    "body": {
+        "plain_text": " \nPlease let me know if you still need Curve Shift.\n\nThanks,\nHeather\n -----Original Message-----\nFrom: \tAllen, Phillip K.  \nSent:\tFriday, December 07, 2001 5:14 AM\nTo:\tDunton, Heather\nSubject:\tRE: West Position\n\nHeather,\n\nDid you attach the file to this email?\n\n -----Original Message-----\nFrom: \tDunton, Heather  \nSent:\tWednesday, December 05, 2001 1:43 PM\nTo:\tAllen, Phillip K.; Belden, Tim\nSubject:\tFW: West Position\n\nAttached is the Delta position for 1/16, 1/30, 6/19, 7/13, 9/21\n\n\n -----Original Message-----\nFrom: \tAllen, Phillip K.  \nSent:\tWednesday, December 05, 2001 6:41 AM\nTo:\tDunton, Heather\nSubject:\tRE: West Position\n\nHeather,\n\nThis is exactly what we need.  Would it possible to add the prior day for each of the dates below to the pivot table.  In order to validate the curve shift on the dates below we also need the prior days ending positions.\n\nThank you,\n\nPhillip Allen\n\n -----Original Message-----\nFrom: \tDunton, Heather  \nSent:\tTuesday, December 04, 2001 3:12 PM\nTo:\tBelden, Tim; Allen, Phillip K.\nCc:\tDriscoll, Michael M.\nSubject:\tWest Position\n\n\nAttached is the Delta position for 1/18, 1/31, 6/20, 7/16, 9/24\n\n\n\n << File: west_delta_pos.xls >> \n\nLet me know if you have any questions.\n\n\nHeather",
+        "html": ""
+    },
+    "indicators": {
+        "ips": [],
+        "urls": [],
+        "domains": [
+            "enron.com"
+        ]
+    },
+    "attachments": [],
+    "evidence": {
+        "original_email_sha256": "f68bb6dab84ab4231a10137b66c04a73575c1357f8238446ce3e3f8db91fb05f"
+    }
+}

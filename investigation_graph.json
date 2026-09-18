@@ -1,0 +1,310 @@
+{
+    "graph_version": "1.2",
+    "node_count": 22,
+    "edge_count": 17,
+    "nodes": [
+        {
+            "id": "email:primary",
+            "type": "EMAIL",
+            "label": "Guaranteed to lose 10-12 lbs in 30 days                          11.150",
+            "properties": {
+                "message_id": "<9a63c01c249e0$e5a9d610$1106fea9@freeyankeedom.com>",
+                "date": "Thu, 22 Aug 2002 07:36:19 -0600"
+            }
+        },
+        {
+            "id": "sender:Slim Down <sabrina@mx3.1premio.com>",
+            "type": "SENDER",
+            "label": "Slim Down <sabrina@mx3.1premio.com>",
+            "properties": {}
+        },
+        {
+            "id": "domain:freeyankeedom.com",
+            "type": "DOMAIN",
+            "label": "freeyankeedom.com",
+            "properties": {}
+        },
+        {
+            "id": "domain:localhost.spamassassin.taint.org",
+            "type": "DOMAIN",
+            "label": "localhost.spamassassin.taint.org",
+            "properties": {}
+        },
+        {
+            "id": "domain:mx3.1premio.com",
+            "type": "DOMAIN",
+            "label": "mx3.1premio.com",
+            "properties": {}
+        },
+        {
+            "id": "domain:spamassassin.taint.org",
+            "type": "DOMAIN",
+            "label": "spamassassin.taint.org",
+            "properties": {}
+        },
+        {
+            "id": "domain:www.adclick.ws",
+            "type": "DOMAIN",
+            "label": "www.adclick.ws",
+            "properties": {}
+        },
+        {
+            "id": "domain:www.qves.com",
+            "type": "DOMAIN",
+            "label": "www.qves.com",
+            "properties": {}
+        },
+        {
+            "id": "url:0",
+            "type": "URL",
+            "label": "http://www.adclick.ws/p.cfm?o=245&s=pk002",
+            "properties": {
+                "scheme": "http",
+                "domain": "www.adclick.ws",
+                "contains_at_symbol": false
+            }
+        },
+        {
+            "id": "url:1",
+            "type": "URL",
+            "label": "http://www.adclick.ws/p.cfm?o=249&s=pk007",
+            "properties": {
+                "scheme": "http",
+                "domain": "www.adclick.ws",
+                "contains_at_symbol": false
+            }
+        },
+        {
+            "id": "url:2",
+            "type": "URL",
+            "label": "http://www.adclick.ws/p.cfm?o=259&s=pk007",
+            "properties": {
+                "scheme": "http",
+                "domain": "www.adclick.ws",
+                "contains_at_symbol": false
+            }
+        },
+        {
+            "id": "url:3",
+            "type": "URL",
+            "label": "http://www.adclick.ws/p.cfm?o=283&s=pk007",
+            "properties": {
+                "scheme": "http",
+                "domain": "www.adclick.ws",
+                "contains_at_symbol": false
+            }
+        },
+        {
+            "id": "url:4",
+            "type": "URL",
+            "label": "http://www.adclick.ws/p.cfm?o=315&s=pk007",
+            "properties": {
+                "scheme": "http",
+                "domain": "www.adclick.ws",
+                "contains_at_symbol": false
+            }
+        },
+        {
+            "id": "url:5",
+            "type": "URL",
+            "label": "http://www.qves.com/trim/?zzzz@spamassassin.taint.org%7C17%7C308417",
+            "properties": {
+                "scheme": "http",
+                "domain": "www.qves.com",
+                "contains_at_symbol": true
+            }
+        },
+        {
+            "id": "ip:193.120.211.219",
+            "type": "IP",
+            "label": "193.120.211.219",
+            "properties": {
+                "classification": "PUBLIC"
+            }
+        },
+        {
+            "id": "ip:209.63.151.251",
+            "type": "IP",
+            "label": "209.63.151.251",
+            "properties": {
+                "classification": "PUBLIC"
+            }
+        },
+        {
+            "id": "relay:qvp0086",
+            "type": "RELAY_HOST",
+            "label": "qvp0086",
+            "properties": {
+                "hop": 1,
+                "ip": "169.254.6.17",
+                "classification": "LINK-LOCAL"
+            }
+        },
+        {
+            "id": "ip:169.254.6.17",
+            "type": "IP",
+            "label": "169.254.6.17",
+            "properties": {
+                "classification": "LINK-LOCAL"
+            }
+        },
+        {
+            "id": "relay:email.qves.com",
+            "type": "RELAY_HOST",
+            "label": "email.qves.com",
+            "properties": {
+                "hop": 2,
+                "ip": "209.63.151.251",
+                "classification": "PUBLIC"
+            }
+        },
+        {
+            "id": "relay:mail.webnote.net",
+            "type": "RELAY_HOST",
+            "label": "mail.webnote.net",
+            "properties": {
+                "hop": 3,
+                "ip": "193.120.211.219",
+                "classification": "PUBLIC"
+            }
+        },
+        {
+            "id": "relay:localhost",
+            "type": "RELAY_HOST",
+            "label": "localhost",
+            "properties": {
+                "hop": 4,
+                "ip": "127.0.0.1",
+                "classification": "LOOPBACK"
+            }
+        },
+        {
+            "id": "ip:127.0.0.1",
+            "type": "IP",
+            "label": "127.0.0.1",
+            "properties": {
+                "classification": "LOOPBACK"
+            }
+        }
+    ],
+    "edges": [
+        {
+            "source": "email:primary",
+            "target": "sender:Slim Down <sabrina@mx3.1premio.com>",
+            "relationship": "SENT_BY",
+            "properties": {}
+        },
+        {
+            "source": "email:primary",
+            "target": "url:0",
+            "relationship": "CONTAINS",
+            "properties": {}
+        },
+        {
+            "source": "url:0",
+            "target": "domain:www.adclick.ws",
+            "relationship": "USES_DOMAIN",
+            "properties": {}
+        },
+        {
+            "source": "email:primary",
+            "target": "url:1",
+            "relationship": "CONTAINS",
+            "properties": {}
+        },
+        {
+            "source": "url:1",
+            "target": "domain:www.adclick.ws",
+            "relationship": "USES_DOMAIN",
+            "properties": {}
+        },
+        {
+            "source": "email:primary",
+            "target": "url:2",
+            "relationship": "CONTAINS",
+            "properties": {}
+        },
+        {
+            "source": "url:2",
+            "target": "domain:www.adclick.ws",
+            "relationship": "USES_DOMAIN",
+            "properties": {}
+        },
+        {
+            "source": "email:primary",
+            "target": "url:3",
+            "relationship": "CONTAINS",
+            "properties": {}
+        },
+        {
+            "source": "url:3",
+            "target": "domain:www.adclick.ws",
+            "relationship": "USES_DOMAIN",
+            "properties": {}
+        },
+        {
+            "source": "email:primary",
+            "target": "url:4",
+            "relationship": "CONTAINS",
+            "properties": {}
+        },
+        {
+            "source": "url:4",
+            "target": "domain:www.adclick.ws",
+            "relationship": "USES_DOMAIN",
+            "properties": {}
+        },
+        {
+            "source": "email:primary",
+            "target": "url:5",
+            "relationship": "CONTAINS",
+            "properties": {}
+        },
+        {
+            "source": "url:5",
+            "target": "domain:www.qves.com",
+            "relationship": "USES_DOMAIN",
+            "properties": {}
+        },
+        {
+            "source": "relay:qvp0086",
+            "target": "ip:169.254.6.17",
+            "relationship": "OBSERVED_AT",
+            "properties": {
+                "hop": 1,
+                "classification": "LINK-LOCAL",
+                "header_warning": null
+            }
+        },
+        {
+            "source": "relay:email.qves.com",
+            "target": "ip:209.63.151.251",
+            "relationship": "OBSERVED_AT",
+            "properties": {
+                "hop": 2,
+                "classification": "PUBLIC",
+                "header_warning": "may be forged"
+            }
+        },
+        {
+            "source": "relay:mail.webnote.net",
+            "target": "ip:193.120.211.219",
+            "relationship": "OBSERVED_AT",
+            "properties": {
+                "hop": 3,
+                "classification": "PUBLIC",
+                "header_warning": null
+            }
+        },
+        {
+            "source": "relay:localhost",
+            "target": "ip:127.0.0.1",
+            "relationship": "OBSERVED_AT",
+            "properties": {
+                "hop": 4,
+                "classification": "LOOPBACK",
+                "header_warning": null
+            }
+        }
+    ]
+}

@@ -1,0 +1,45 @@
+{
+    "tool": "MailTraceAI",
+    "risk_engine_version": "3.0",
+    "analysis_timestamp": "2026-09-08T18:54:44.818360+00:00",
+    "email": {
+        "file": "C:\\Users\\Farzan\\Desktop\\MailTraceAI\\samples\\spam_test",
+        "sha256": "8f6272eaef144851699b0170603dad704a5dbc943466f92ab630e0d6c4d5b4b8"
+    },
+    "ml_detection": {
+        "prediction": "spam",
+        "confidence": 0.8079380358574095,
+        "spam_probability": 0.8079380358574095,
+        "ham_probability": 0.19206196414259047
+    },
+    "threat_intelligence": {
+        "status": "NOT_CONFIGURED",
+        "ips_checked": 2,
+        "domains_checked": 6,
+        "urls_checked": 6
+    },
+    "risk": {
+        "score": 43,
+        "verdict": "LOW RISK",
+        "reasons": [
+            {
+                "source": "ML",
+                "type": "ELEVATED_SPAM_PROBABILITY",
+                "points": 28,
+                "description": "ML model assigned 80.79% spam probability."
+            },
+            {
+                "source": "SECURITY_ANALYZER",
+                "type": "HTTP_URLS",
+                "points": 5,
+                "description": "6 URL(s) use HTTP instead of HTTPS."
+            },
+            {
+                "source": "SECURITY_ANALYZER",
+                "type": "URL_AT_SYMBOL",
+                "points": 10,
+                "description": "1 URL(s) contain an @ character."
+            }
+        ]
+    }
+}
