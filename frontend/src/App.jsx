@@ -13,6 +13,7 @@ import "@xyflow/react/dist/style.css";
 import "./App.css";
 
 import LocationMap from "./LocationMap";
+import useTheme, { THEME_OPTIONS } from "./theme";
 import formatLocation, { formatCoordinates } from "./formatLocation";
 
 const API_BASE = import.meta.env.VITE_API_URL || "http://127.0.0.1:8001";
@@ -279,7 +280,7 @@ function convertGraphToReactFlow(graph) {
       },
 
       labelBgStyle: {
-        fill: "#0b111d",
+        fill: "var(--graph-label-bg)",
         fillOpacity: 0.95,
       },
 
@@ -449,10 +450,46 @@ function NodeDetails({
 
 
 /* ============================================================
+   THEME SWITCHER
+   ============================================================ */
+
+const THEME_LABELS = {
+  system: "Auto",
+  light: "Light",
+  dark: "Dark",
+};
+
+function ThemeSwitcher({ preference, onChange }) {
+  return (
+    <div
+      className="theme-switcher"
+      role="radiogroup"
+      aria-label="Color theme"
+    >
+      {THEME_OPTIONS.map((option) => (
+        <button
+          key={option}
+          type="button"
+          role="radio"
+          aria-checked={preference === option}
+          className={preference === option ? "active" : ""}
+          onClick={() => onChange(option)}
+        >
+          {THEME_LABELS[option]}
+        </button>
+      ))}
+    </div>
+  );
+}
+
+
+/* ============================================================
    MAIN APP
    ============================================================ */
 
 function App() {
+
+  const theme = useTheme();
 
   const [file, setFile] =
     useState(null);
@@ -621,9 +658,18 @@ function App() {
 
         </div>
 
-        <div className="status">
-          <span></span>
-          SYSTEM ONLINE
+        <div className="header-actions">
+
+          <ThemeSwitcher
+            preference={theme.preference}
+            onChange={theme.setPreference}
+          />
+
+          <div className="status">
+            <span></span>
+            SYSTEM ONLINE
+          </div>
+
         </div>
 
       </header>
@@ -920,6 +966,7 @@ function App() {
                 <>
 
                 <LocationMap
+                  theme={theme.resolved}
                   geolocation={geolocation}
                   relayPath={relayPath}
                   senderUtcOffset={
@@ -1055,6 +1102,8 @@ function App() {
                     }}
 
                     minZoom={0.25}
+
+                    colorMode={theme.resolved}
 
                     maxZoom={1.5}
 

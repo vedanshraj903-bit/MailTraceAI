@@ -272,7 +272,10 @@ export default function LocationMap({
   geolocation,
   relayPath = [],
   senderUtcOffset = null,
+  theme = "dark",
 }) {
+  const tiles = theme === "light" ? "Light" : "Dark";
+
   const { stops, unrouted } = buildStops(geolocation, relayPath);
 
   const pins = groupIntoPins([...stops, ...unrouted]);
@@ -326,13 +329,15 @@ export default function LocationMap({
       >
 
         <TileLayer
-          url="https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Dark_Gray_Base/MapServer/tile/{z}/{y}/{x}"
+          key={`base-${tiles}`}
+          url={`https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_${tiles}_Gray_Base/MapServer/tile/{z}/{y}/{x}`}
           attribution="Tiles &copy; Esri &mdash; Esri, HERE, Garmin, &copy; OpenStreetMap contributors"
           maxZoom={16}
         />
 
         <TileLayer
-          url="https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Dark_Gray_Reference/MapServer/tile/{z}/{y}/{x}"
+          key={`labels-${tiles}`}
+          url={`https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_${tiles}_Gray_Reference/MapServer/tile/{z}/{y}/{x}`}
           maxZoom={16}
         />
 
