@@ -177,5 +177,7 @@ def get_forensic_report():
     return FileResponse(
         path=REPORT_FILE,
         media_type="text/html",
-        filename="forensic_report.html"
+        filename="forensic_report.html",
+        # Show the report in the browser tab instead of downloading it.
+        content_disposition_type="inline"
     )
