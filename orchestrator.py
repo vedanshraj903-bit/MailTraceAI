@@ -1,5 +1,6 @@
 from pathlib import Path
 import json
+import os
 
 from Parser.email_parser import parse_email
 from Parser.security_analyzer import analyze_email
@@ -8,6 +9,14 @@ from Geolocation.geolocation import geolocate_ips
 from Investigation.correlation_engine import build_investigation_graph
 from Risk.risk_engine import calculate_risk
 from Report.forensic_report import save_html_report
+
+
+# Where run artifacts are written. Serverless hosts such as Vercel
+# only allow writes under /tmp.
+OUTPUT_DIR = Path(
+    os.getenv("MAILTRACE_OUTPUT_DIR")
+    or ("/tmp" if os.getenv("VERCEL") else ".")
+)
 
 
 # ============================================================
@@ -173,9 +182,7 @@ def run_pipeline(email_file):
     # SAVE FINAL ANALYSIS
     # ========================================================
 
-    output_file = Path(
-        "final_analysis.json"
-    )
+    output_file = OUTPUT_DIR / "final_analysis.json"
 
     with output_file.open(
         "w",
@@ -215,7 +222,7 @@ def run_pipeline(email_file):
 
     report_file = save_html_report(
         final_analysis,
-        "forensic_report.html"
+        OUTPUT_DIR / "forensic_report.html"
     )
 
     print(

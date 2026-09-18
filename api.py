@@ -7,7 +7,7 @@ import os
 import shutil
 import uuid
 
-from orchestrator import run_pipeline
+from orchestrator import OUTPUT_DIR, run_pipeline
 
 
 app = FastAPI(
@@ -48,15 +48,15 @@ app.add_middleware(
 # UPLOAD DIRECTORY
 # --------------------------------------------------
 
-UPLOAD_DIR = Path("uploads")
-UPLOAD_DIR.mkdir(exist_ok=True)
+UPLOAD_DIR = OUTPUT_DIR / "uploads"
+UPLOAD_DIR.mkdir(parents=True, exist_ok=True)
 
 
 # --------------------------------------------------
 # FORENSIC REPORT FILE
 # --------------------------------------------------
 
-REPORT_FILE = Path("forensic_report.html")
+REPORT_FILE = OUTPUT_DIR / "forensic_report.html"
 
 
 # --------------------------------------------------

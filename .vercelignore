@@ -1,0 +1,13 @@
+# Only the Python API is deployed from the repo root; the frontend
+# is a separate Vercel project rooted at frontend/.
+/frontend
+/datasets
+/samples
+/uploads
+/.venv
+/.github
+__pycache__
+*.pyc
+/*.json
+/forensic_report.html
+/render.yaml
