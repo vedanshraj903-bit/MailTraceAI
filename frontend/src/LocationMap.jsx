@@ -24,7 +24,7 @@ import formatLocation, { formatCoordinates } from "./formatLocation";
 const ROLES = {
   SENDER: {
     label: "Sender device",
-    description: "Client IP recorded by the sender's webmail",
+    description: "IP the sender connected from (device, VPN or cloud server)",
     color: "#ff6b6b",
   },
   ORIGIN: {
@@ -72,7 +72,9 @@ function coordinateKey(item) {
   Each public relay hop with coordinates becomes one stop,
   in hop order, and gets a role:
 
-    hop 0 (X-Originating-IP)  → SENDER
+    sender's own IP           → SENDER
+      (hop 0 from X-Originating-IP and similar headers, or an
+      authenticated-submission first hop: sender_client)
     first Received hop        → ORIGIN
     last Received hop         → FINAL
     everything in between     → RELAY
@@ -88,14 +90,15 @@ function buildStops(geolocation, relayPath) {
       hop: hop.hop,
       ip: hop.ip,
       mayBeForged: Boolean(hop.may_be_forged),
+      senderClient: hop.hop === 0 || Boolean(hop.sender_client),
       geo: geoByIp.get(hop.ip),
     }))
     .sort((a, b) => a.hop - b.hop);
 
-  const received = stops.filter((stop) => stop.hop > 0);
+  const received = stops.filter((stop) => !stop.senderClient);
 
   for (const stop of stops) {
-    if (stop.hop === 0) {
+    if (stop.senderClient) {
       stop.role = "SENDER";
     } else if (stop === received[0]) {
       stop.role = "ORIGIN";
@@ -203,15 +206,32 @@ const OFFSET_REGIONS = {
   "+12:00": "New Zealand",
 };
 
-function SenderNotice({ hasSenderIp, hasServers, senderUtcOffset }) {
-  if (hasSenderIp && !senderUtcOffset) {
-    return null;
-  }
+const SENDER_IP_SOURCES = {
+  AUTHENTICATED_SUBMISSION:
+    "the first mail server logged the IP the sender signed in from",
+};
 
+function SenderNotice({
+  hasSenderIp,
+  hasServers,
+  senderIpSource,
+  senderUtcOffset,
+}) {
   const region = OFFSET_REGIONS[senderUtcOffset];
 
   return (
     <div className="map-notice">
+
+      {hasSenderIp && (
+        <p>
+          <strong>Sender's IP found</strong>{" "}
+          ({SENDER_IP_SOURCES[senderIpSource]
+            || <>from the <code>{senderIpSource}</code> header</>}).
+          This is the network the email was sent from. It can be the
+          sender's own connection, or a VPN, proxy or cloud server
+          they used to hide it.
+        </p>
+      )}
 
       {!hasSenderIp && (
         <p>
@@ -272,6 +292,7 @@ export default function LocationMap({
   geolocation,
   relayPath = [],
   senderUtcOffset = null,
+  senderIpSource = null,
   theme = "dark",
 }) {
   const tiles = theme === "light" ? "Light" : "Dark";
@@ -284,6 +305,7 @@ export default function LocationMap({
     <SenderNotice
       hasSenderIp={stops.some((stop) => stop.role === "SENDER")}
       hasServers={pins.length > 0}
+      senderIpSource={senderIpSource}
       senderUtcOffset={senderUtcOffset}
     />
   );

@@ -64,6 +64,38 @@ BRACKETED_IP_PATTERN = re.compile(
 
 IP_TOKEN_PATTERN = re.compile(r"[0-9A-Fa-f:.]{7,}")
 
+HELO_LITERAL_PATTERN = re.compile(r"\bhelo=\[[^\]]*\]", re.IGNORECASE)
+
+
+# Headers where mail services record the sender's own client IP
+# (webmail, cPanel/HostGator, Microsoft 365, proxies).
+
+SENDER_IP_HEADERS = (
+    "X-Originating-IP",
+    "X-Sender-IP",
+    "X-Source-IP",
+    "X-Client-IP",
+    "X-MS-Exchange-Organization-OriginalClientIPAddress",
+    "X-Real-IP",
+    "X-Forwarded-For",
+)
+
+# A Received hop recorded when a logged-in user submitted the
+# message (RFC 3848 "ESMTPA"/"ESMTPSA", Postfix "Authenticated
+# sender", Sendmail "authenticated", Yahoo webmail "via HTTP").
+# Its connecting IP is the sender's own device or network.
+
+CLIENT_SUBMISSION_PATTERN = re.compile(
+    r"\bwith\s+(?:UTF8)?(?:E?SMTPS?A|LMTPS?A)\b"
+    r"|\bauthenticated\b"
+    r"|\bvia\s+HTTP\b",
+    re.IGNORECASE
+)
+
+
+def is_client_submission(received):
+    return bool(CLIENT_SUBMISSION_PATTERN.search(" ".join(received.split())))
+
 
 def extract_utc_offset(date_header):
     """
@@ -109,7 +141,12 @@ def extract_received_ip(received):
     from_clause = RECEIVED_BY_PATTERN.split(header, maxsplit=1)[0]
 
     # Prefer the bracketed IP written by the receiving server.
-    for candidate in BRACKETED_IP_PATTERN.findall(from_clause):
+    # The client's self-reported HELO is not evidence: drop Exim's
+    # "helo=[ip]", and since Postfix writes "from [helo-ip] (rdns
+    # [real-ip])", take the last bracketed IP that remains.
+    verified = HELO_LITERAL_PATTERN.sub("", from_clause)
+
+    for candidate in reversed(BRACKETED_IP_PATTERN.findall(verified)):
         ip = parse_ip(candidate)
         if ip:
             return ip
@@ -462,15 +499,21 @@ def analyze_email(email_file):
             "ip": ip,
             "classification": classify_ip(ip),
             "may_be_forged": "forged" in received.lower(),
+            "sender_client": False,
             "raw": received
         })
 
-    # Webmail clients often record the sender's own IP here.
-    # It precedes every Received hop, so it is hop 0.
+    # Webmail clients often record the sender's own IP in a
+    # header. It precedes every Received hop, so it is hop 0.
 
-    for header_name in ("X-Originating-IP", "X-Sender-IP"):
+    sender_ip_source = None
 
-        ip = parse_ip(str(message.get(header_name) or ""))
+    for header_name in SENDER_IP_HEADERS:
+
+        value = str(message.get(header_name) or "")
+
+        # X-Forwarded-For lists "client, proxy1, proxy2".
+        ip = parse_ip(value.split(",")[0].strip())
 
         if ip:
             relay_path.insert(0, {
@@ -478,9 +521,30 @@ def analyze_email(email_file):
                 "ip": ip,
                 "classification": classify_ip(ip),
                 "may_be_forged": False,
-                "raw": f"{header_name}: {message.get(header_name)}"
+                "sender_client": True,
+                "raw": f"{header_name}: {value}"
             })
+            sender_ip_source = header_name
             break
+
+    # Otherwise, when the oldest hop is an authenticated
+    # submission from a public IP, that IP is the sender's.
+
+    if sender_ip_source is None and relay_path:
+
+        oldest = relay_path[0]
+
+        if (
+            oldest["classification"] == "PUBLIC"
+            and is_client_submission(oldest["raw"])
+        ):
+            oldest["sender_client"] = True
+            sender_ip_source = "AUTHENTICATED_SUBMISSION"
+
+    sender_hop = next(
+        (hop for hop in relay_path if hop["sender_client"]),
+        None
+    )
 
     # Public infrastructure = public relay IPs in hop order.
     # IPs from the body or URLs are indicators, not routing.
@@ -616,6 +680,12 @@ def analyze_email(email_file):
 
             "relay_path":
                 relay_path,
+
+            "sender_ip":
+                sender_hop["ip"] if sender_hop else None,
+
+            "sender_ip_source":
+                sender_ip_source,
 
             "ips": [
 

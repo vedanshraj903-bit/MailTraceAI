@@ -969,6 +969,12 @@ function App() {
                   theme={theme.resolved}
                   geolocation={geolocation}
                   relayPath={relayPath}
+                  senderIpSource={
+                    result
+                      ?.security_analysis
+                      ?.routing
+                      ?.sender_ip_source
+                  }
                   senderUtcOffset={
                     result
                       ?.security_analysis
