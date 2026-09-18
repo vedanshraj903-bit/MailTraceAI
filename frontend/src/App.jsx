@@ -588,11 +588,30 @@ function App() {
 
   function openForensicReport() {
 
+    const html = result?.forensic_report_html;
+
+    // Older API versions only serve the report from /report.
+    if (!html) {
+      window.open(
+        REPORT_URL,
+        "_blank",
+        "noopener,noreferrer"
+      );
+      return;
+    }
+
+    const reportUrl = URL.createObjectURL(
+      new Blob([html], { type: "text/html" })
+    );
+
     window.open(
-      REPORT_URL,
+      reportUrl,
       "_blank",
       "noopener,noreferrer"
     );
+
+    // Give the new tab time to load before releasing the blob.
+    setTimeout(() => URL.revokeObjectURL(reportUrl), 60000);
   }
 
 

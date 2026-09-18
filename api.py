@@ -8,6 +8,7 @@ import shutil
 import uuid
 
 from orchestrator import OUTPUT_DIR, run_pipeline
+from Report.forensic_report import generate_html_report
 
 
 app = FastAPI(
@@ -125,6 +126,14 @@ async def analyze_email(file: UploadFile = File(...)):
 
         result = run_pipeline(
             file_path
+        )
+
+        # Include the report so the browser can open it directly.
+        # On serverless hosts a later GET /report may reach another
+        # instance that never ran this analysis.
+
+        result["forensic_report_html"] = generate_html_report(
+            result
         )
 
 
