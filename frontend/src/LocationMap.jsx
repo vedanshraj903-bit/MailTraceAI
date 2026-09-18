@@ -220,9 +220,9 @@ function SenderNotice({ hasSenderIp, hasServers, senderUtcOffset }) {
           so the sender's physical location cannot be traced.
           {hasServers && (
             <> The pins show the <em>mail servers</em> the message
-            passed through. Server locations are where the IP is
-            registered, so large providers often show up at their
-            head office (e.g. Google → Mountain View).</>
+            passed through. Locations come from IP geolocation
+            (ipinfo.io): the country is reliable, the city is an
+            estimate.</>
           )}
         </p>
       )}

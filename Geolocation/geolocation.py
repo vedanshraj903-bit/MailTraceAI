@@ -1,27 +1,55 @@
 import json
 import ipaddress
+import os
+import ssl
 import urllib.request
 import urllib.error
+from concurrent.futures import ThreadPoolExecutor
+from pathlib import Path
 
 
 # ============================================================
-# IP-API CONFIGURATION
+# IPINFO CONFIGURATION
 # ============================================================
 #
-# ip-api.com free tier: no token required, HTTP only,
-# 15 batch requests/minute, up to 100 IPs per batch,
-# non-commercial use only.
+# ipinfo.io: HTTPS, works without a token (rate-limited per
+# client IP). Set IPINFO_TOKEN for the free 50k lookups/month
+# tier, which is recommended on shared hosts such as Vercel.
+#
+# ipinfo places infrastructure IPs where the server actually
+# is (e.g. Google mail servers in their data centres) rather
+# than at the owner's registered head office.
 
-IP_API_BATCH_URL = "http://ip-api.com/batch"
+IPINFO_URL = "https://ipinfo.io/{ip}/json"
 
-IP_API_FIELDS = (
-    "status,message,query,"
-    "continent,continentCode,country,countryCode,"
-    "regionName,city,zip,lat,lon,timezone,"
-    "isp,org,as"
+IPINFO_TOKEN = os.getenv("IPINFO_TOKEN")
+
+REQUEST_TIMEOUT = 10
+
+MAX_PARALLEL_LOOKUPS = 8
+
+
+# ipinfo only returns an ISO country code. Names and continents
+# come from ipinfo's own reference data (ipinfo/python, Apache-2.0).
+COUNTRIES = json.loads(
+    (Path(__file__).parent / "countries.json").read_text(encoding="utf-8")
 )
 
-IP_API_BATCH_LIMIT = 100
+
+def _ssl_context():
+    """
+    Use certifi's CA bundle when available: python.org builds on
+    macOS ship without system certificates, so HTTPS would fail.
+    """
+
+    try:
+        import certifi
+        return ssl.create_default_context(cafile=certifi.where())
+    except ImportError:
+        return ssl.create_default_context()
+
+
+SSL_CONTEXT = _ssl_context()
 
 
 # ============================================================
@@ -55,69 +83,120 @@ def validate_ip(ip):
 
 
 # ============================================================
-# CONVERT IP-API RESPONSE INTO MAILTRACEAI FORMAT
+# CONVERT IPINFO RESPONSE INTO MAILTRACEAI FORMAT
 # ============================================================
 
 def convert_result(ip, data):
 
-    if data.get("status") != "success":
+    if data.get("bogon"):
+        return {
+            "ip": ip,
+            "status": "NON_PUBLIC_IP",
+            "error": "Only public IP addresses are geolocated."
+        }
+
+    if not data.get("country"):
         return {
             "ip": ip,
             "status": "API_ERROR",
-            "error": data.get("message", "Lookup failed.")
+            "error": "ipinfo.io has no location for this IP."
         }
 
-    # "as" looks like "AS15169 Google LLC"
-    as_parts = (data.get("as") or "").split(" ", 1)
-    asn = as_parts[0] if as_parts[0].startswith("AS") else None
-    as_name = as_parts[1] if asn and len(as_parts) > 1 else None
+    latitude = longitude = None
+
+    try:
+        latitude, longitude = (
+            float(part) for part in data.get("loc", "").split(",")
+        )
+    except ValueError:
+        pass
+
+    # "org" looks like "AS15169 Google LLC"
+    org_parts = (data.get("org") or "").split(" ", 1)
+    asn = org_parts[0] if org_parts[0].startswith("AS") else None
+    as_name = org_parts[1] if asn and len(org_parts) > 1 else None
+
+    country_code = data.get("country")
+    country = COUNTRIES.get(country_code, {})
 
     return {
-        "ip": data.get("query", ip),
+        "ip": data.get("ip", ip),
         "status": "SUCCESS",
-        "country": data.get("country"),
-        "country_code": data.get("countryCode"),
-        "continent": data.get("continent"),
-        "continent_code": data.get("continentCode"),
-        "region": data.get("regionName"),
+        "hostname": data.get("hostname"),
+        "country": country.get("name") or country_code,
+        "country_code": country_code,
+        "continent": country.get("continent"),
+        "continent_code": country.get("continent_code"),
+        "region": data.get("region"),
         "city": data.get("city"),
-        "postal_code": data.get("zip"),
-        "latitude": data.get("lat"),
-        "longitude": data.get("lon"),
+        "postal_code": data.get("postal"),
+        "latitude": latitude,
+        "longitude": longitude,
         "timezone": data.get("timezone"),
-        "isp": data.get("isp"),
-        "organization": data.get("org"),
+        "isp": as_name,
+        "organization": as_name or data.get("org"),
         "asn": asn,
-        "asn_name": as_name or data.get("isp"),
+        "asn_name": as_name,
         "asn_domain": None,
-        "source": "ip-api.com"
+        "anycast": bool(data.get("anycast")),
+        "source": "ipinfo.io"
     }
 
 
 # ============================================================
-# QUERY IP-API FOR A BATCH OF IPs
+# QUERY IPINFO FOR ONE IP
 # ============================================================
 
-def query_batch(ips):
+def query_ip(ip):
     """
-    Send up to 100 IPs to ip-api.com in one request.
-    Returns a list of raw responses in the same order,
-    or raises the underlying error.
+    Look up one IP on ipinfo.io and return a MailTraceAI result.
+    Network and API failures are returned as error results.
     """
 
-    payload = json.dumps(
-        [{"query": ip} for ip in ips]
-    ).encode("utf-8")
+    headers = {"Accept": "application/json"}
+
+    if IPINFO_TOKEN:
+        headers["Authorization"] = f"Bearer {IPINFO_TOKEN}"
 
     request = urllib.request.Request(
-        f"{IP_API_BATCH_URL}?fields={IP_API_FIELDS}",
-        data=payload,
-        headers={"Content-Type": "application/json"},
-        method="POST"
+        IPINFO_URL.format(ip=ip),
+        headers=headers
     )
 
-    with urllib.request.urlopen(request, timeout=10) as response:
-        return json.loads(response.read().decode("utf-8"))
+    try:
+        with urllib.request.urlopen(
+            request,
+            timeout=REQUEST_TIMEOUT,
+            context=SSL_CONTEXT
+        ) as response:
+            data = json.loads(response.read().decode("utf-8"))
+
+    except urllib.error.HTTPError as error:
+        if error.code == 429:
+            message = (
+                "ipinfo.io rate limit reached. "
+                "Set IPINFO_TOKEN for a higher limit."
+            )
+        else:
+            message = f"ipinfo.io returned HTTP {error.code}."
+
+        return {"ip": ip, "status": "API_ERROR", "error": message}
+
+    except urllib.error.URLError as error:
+        return {
+            "ip": ip,
+            "status": "NETWORK_ERROR",
+            "error": str(error.reason)
+        }
+
+    except (json.JSONDecodeError, TimeoutError):
+        return {
+            "ip": ip,
+            "status": "INVALID_RESPONSE",
+            "error": "ipinfo.io returned an invalid response."
+        }
+
+    return convert_result(ip, data)
 
 
 # ============================================================
@@ -129,7 +208,7 @@ def geolocate_ips(ips):
     Geolocate multiple IP addresses.
 
     Invalid and non-public IPs are rejected locally;
-    public IPs are resolved in batches via ip-api.com.
+    public IPs are looked up on ipinfo.io in parallel.
     Output order matches input order.
     """
 
@@ -140,49 +219,17 @@ def geolocate_ips(ips):
         if result is None
     ]
 
-    for start in range(0, len(pending), IP_API_BATCH_LIMIT):
+    if pending:
+        with ThreadPoolExecutor(
+            max_workers=min(MAX_PARALLEL_LOOKUPS, len(pending))
+        ) as pool:
+            lookups = pool.map(
+                query_ip,
+                [ips[index] for index in pending]
+            )
 
-        chunk = pending[start:start + IP_API_BATCH_LIMIT]
-        chunk_ips = [ips[index] for index in chunk]
-
-        try:
-            responses = query_batch(chunk_ips)
-
-        except urllib.error.HTTPError as error:
-            failure = {
-                "status": "API_ERROR",
-                "error": f"ip-api.com returned HTTP {error.code}."
-            }
-            responses = None
-
-        except urllib.error.URLError as error:
-            failure = {
-                "status": "NETWORK_ERROR",
-                "error": str(error.reason)
-            }
-            responses = None
-
-        except (json.JSONDecodeError, TimeoutError):
-            failure = {
-                "status": "INVALID_RESPONSE",
-                "error": "ip-api.com returned an invalid response."
-            }
-            responses = None
-
-        for position, index in enumerate(chunk):
-
-            ip = ips[index]
-
-            if responses is None:
-                results[index] = {"ip": ip, **failure}
-            elif position >= len(responses):
-                results[index] = {
-                    "ip": ip,
-                    "status": "INVALID_RESPONSE",
-                    "error": "Missing result from ip-api.com."
-                }
-            else:
-                results[index] = convert_result(ip, responses[position])
+            for index, result in zip(pending, lookups):
+                results[index] = result
 
     return results
 

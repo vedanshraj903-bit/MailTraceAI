@@ -14,3 +14,5 @@ services:
         sync: false
       - key: ABUSEIPDB_API_KEY
         sync: false
+      - key: IPINFO_TOKEN
+        sync: false
