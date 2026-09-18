@@ -120,6 +120,8 @@ def build_case_summary(analysis):
         "prediction": safe(prediction),
         "confidence": ml.get("confidence"),
         "spam_probability": spam_probability,
+        "phishing_probability": ml.get("phishing_probability"),
+        "sender_verification": risk_assessment.get("sender_verification"),
     }
 
 
@@ -578,6 +580,13 @@ def html_table(rows, headers):
     """
 
 
+SENDER_STATUS_LABELS = {
+    "TRUSTED": "Trusted",
+    "AUTHENTICATED": "Authenticated",
+    "NOT_VERIFIED": "Not verified",
+}
+
+
 def format_probability(value):
     if value is None:
         return "N/A"
@@ -870,8 +879,13 @@ li {{ margin-bottom: 12px; }}
             <div class="value">{escape(case['prediction'])}</div>
         </div>
         <div class="card">
-            <span class="label">Spam Probability</span>
-            <div class="value">{escape(format_probability(case['spam_probability']))}</div>
+            <span class="label">Sender Verification</span>
+            <div class="value">{escape(SENDER_STATUS_LABELS.get((case.get('sender_verification') or {}).get('status'), 'N/A'))}</div>
+            <div class="muted">{escape((case.get('sender_verification') or {}).get('domain') or '')}</div>
+        </div>
+        <div class="card">
+            <span class="label">Phishing Probability</span>
+            <div class="value">{escape(format_probability(case['phishing_probability']))}</div>
         </div>
     </div>
 </section>

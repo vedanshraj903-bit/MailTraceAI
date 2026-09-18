@@ -176,6 +176,73 @@ function pinIcon(pin) {
 
 
 /* ============================================================
+   SENDER NOTICE
+   ============================================================ */
+
+// Common regions per UTC offset, used only as a hint.
+const OFFSET_REGIONS = {
+  "-08:00": "US/Canada Pacific",
+  "-07:00": "US/Canada Mountain or Pacific (summer)",
+  "-06:00": "US/Canada Central or Mountain (summer), Mexico",
+  "-05:00": "US/Canada Eastern or Central (summer), Colombia, Peru",
+  "-04:00": "US/Canada Eastern (summer), Venezuela, Chile",
+  "-03:00": "Brazil, Argentina",
+  "+00:00": "UK/Ireland/Portugal (winter), West Africa, or UTC",
+  "+01:00": "Central Europe (winter), UK/Ireland (summer), Nigeria",
+  "+02:00": "Central Europe (summer), Eastern Europe, Egypt, South Africa",
+  "+03:00": "Russia (Moscow), Turkey, Saudi Arabia, East Africa",
+  "+04:00": "UAE, Oman",
+  "+05:00": "Pakistan",
+  "+05:30": "India, Sri Lanka",
+  "+05:45": "Nepal",
+  "+06:00": "Bangladesh",
+  "+07:00": "Thailand, Vietnam, Indonesia (West)",
+  "+08:00": "China, Singapore, Malaysia, Philippines",
+  "+09:00": "Japan, South Korea",
+  "+10:00": "Australia (East)",
+  "+12:00": "New Zealand",
+};
+
+function SenderNotice({ hasSenderIp, hasServers, senderUtcOffset }) {
+  if (hasSenderIp && !senderUtcOffset) {
+    return null;
+  }
+
+  const region = OFFSET_REGIONS[senderUtcOffset];
+
+  return (
+    <div className="map-notice">
+
+      {!hasSenderIp && (
+        <p>
+          <strong>Sender's own IP is not in the headers.</strong>{" "}
+          Providers such as Gmail, Outlook.com and Yahoo remove it,
+          so the sender's physical location cannot be traced.
+          {hasServers && (
+            <> The pins show the <em>mail servers</em> the message
+            passed through. Server locations are where the IP is
+            registered, so large providers often show up at their
+            head office (e.g. Google → Mountain View).</>
+          )}
+        </p>
+      )}
+
+      {senderUtcOffset && (
+        <p>
+          <strong>Sender's clock:</strong>{" "}
+          UTC{senderUtcOffset}
+          {region && <> ({region})</>}. This comes from the
+          email's Date header. It hints at the sender's region
+          but can be changed by the sender.
+        </p>
+      )}
+
+    </div>
+  );
+}
+
+
+/* ============================================================
    CURSOR COORDINATES
    ============================================================ */
 
@@ -201,16 +268,31 @@ function CursorCoordinates() {
    LOCATION MAP
    ============================================================ */
 
-export default function LocationMap({ geolocation, relayPath = [] }) {
+export default function LocationMap({
+  geolocation,
+  relayPath = [],
+  senderUtcOffset = null,
+}) {
   const { stops, unrouted } = buildStops(geolocation, relayPath);
 
   const pins = groupIntoPins([...stops, ...unrouted]);
 
+  const notice = (
+    <SenderNotice
+      hasSenderIp={stops.some((stop) => stop.role === "SENDER")}
+      hasServers={pins.length > 0}
+      senderUtcOffset={senderUtcOffset}
+    />
+  );
+
   if (pins.length === 0) {
     return (
-      <p className="muted">
-        No IP locations could be resolved for mapping.
-      </p>
+      <>
+        {notice}
+        <p className="muted">
+          No IP locations could be resolved for mapping.
+        </p>
+      </>
     );
   }
 
@@ -233,6 +315,8 @@ export default function LocationMap({ geolocation, relayPath = [] }) {
 
   return (
     <div className="location-map">
+
+      {notice}
 
       <MapContainer
         bounds={pins.map((pin) => pin.position)}

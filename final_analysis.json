@@ -3,386 +3,144 @@
     "analysis_version": "1.0",
     "parsed_email": {
         "from": "HDFC Bank InstaAlerts <alerts@hdfcbank.bank.in>",
-        "to": "VEDANSHRAJ903@GMAIL.COM",
+        "to": "customer@example.com",
         "cc": null,
         "reply_to": null,
-        "return_path": "<A.1789654653052574799.22228.1156.5.1.0.0.1@comm.hdfcbank.bank.in>",
-        "subject": "\u2757  You have done a UPI txn. Check details!",
-        "date": "Thu, 17 Sep 2026 19:47:33 +0530",
-        "message_id": "<6aabf67d.2288c3e7.2d4ce6.82b7SMTPIN_ADDED_BROKEN@mx.google.com>",
+        "return_path": null,
+        "subject": "You have done a UPI txn. Check details!",
+        "date": "Fri, 18 Sep 2026 10:12:00 +0530",
+        "message_id": null,
         "headers": [
             {
-                "name": "Delivered-To",
-                "value": "vedanshraj903@gmail.com"
-            },
-            {
-                "name": "Received",
-                "value": "by 2002:a05:6802:4585:10b0:63c:6897:9e92 with SMTP id ih5-n1csp7441775ocb;        Thu, 17 Sep 2026 07:17:33 -0700 (PDT)"
-            },
-            {
-                "name": "X-Received",
-                "value": "by 2002:a05:6a20:b40a:b0:3dd:85aa:d266 with SMTP id adf61e73a8af0-3dd85aae4a4mr912240637.30.1789654653537;        Thu, 17 Sep 2026 07:17:33 -0700 (PDT)"
-            },
-            {
-                "name": "ARC-Seal",
-                "value": "i=1; a=rsa-sha256; t=1789654653; cv=none;        d=google.com; s=arc-20260327;        b=bOsI1kxezm/U/HOCKoZs4y8IAp6Tt3EB7ieF7MvQqitG+k4aRgtm0iVTcYZQl1tx0M         HPiv3U1ON5aQtOnFELocHDsVxqmkdlwn74Iy2PQlkyOsoLgvLJDMUunKRCKoIXjCijWT         Th1Tr6k3rQReQqjxtzdvyDwztE3WZ7PONeaf5rKnPsZ0HG0Sfr+Y0+wUurVv8n9h9vIG         y9R5EKVAgcB9hpmrqX/hPLH2C5qnzwuqRc7T1NdTe+cGeGIi1AJFsJaXRIgSevWVwwp1         2T56ND1QOwuXDwQ78aEchmet+NM+csqC1O78+5/9B+fOaNh7SK+u+EcJk5amw6euguwH         EecQ=="
-            },
-            {
-                "name": "ARC-Message-Signature",
-                "value": "i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;        h=date:from:subject:to:mime-version:dkim-signature:dkim-signature         :message-id;        bh=ExL4HSsGLVFVScE0CC2Pn9CNd0aCzlY2Qm2Kowgo1Ew=;        fh=1G6/UlWpmluie5EXVwE2ubCiCfmTaSI2ng+XqchHB6g=;        b=aTtL6Uu7KaH25TWZ68hoQdFNhquKqpE6xBP5YWOjynGucHcZDCAskpk38SbRV/VzYq         5JIUtFZgsIM9ZHoeTE6uy/o5AlUYlZqbuH1Jxi3eKmZckqzwIe95UIl9q/JwyCJF/1ud         hS8MghjNvDTzi014VZ+kR0WQ5fgOrsLQfqT+A0GyvFEOp29Nf0Us3uIqvvFGf17cWG5R         afK7vf5oATz/3u8TjFDplwU0cD9JAdxfFjHTgUuUxV48Ho4sZ7SaWOBqZ/KsaERtFOPN         J37mkSBF/WFtgAkc7J5kmMbpTHbSxaUO5b17Bvgl0OmRzZReBh4Qe2KRiIJBBS8hIX9B         uzOw==;        dara=google.com"
-            },
-            {
-                "name": "ARC-Authentication-Results",
-                "value": "i=1; mx.google.com;       dkim=pass header.i=@hdfcbank.bank.in header.s=acls01 header.b=IawsEBVn;       dkim=pass header.i=@aclmobile.net header.s=5nXKKHgBnyGAcLwvMLZIq header.b=przL79dS;       spf=pass (google.com: domain of a.1789654653052574799.22228.1156.5.1.0.0.1@comm.hdfcbank.bank.in designates 103.54.236.13 as permitted sender) smtp.mailfrom=A.1789654653052574799.22228.1156.5.1.0.0.1@comm.hdfcbank.bank.in;       dmarc=pass (p=REJECT sp=REJECT dis=NONE) header.from=hdfcbank.bank.in"
-            },
-            {
-                "name": "Return-Path",
-                "value": "<A.1789654653052574799.22228.1156.5.1.0.0.1@comm.hdfcbank.bank.in>"
-            },
-            {
-                "name": "Received",
-                "value": "from o13.smtp-out.aclmobile.net (o13.smtp-out.aclmobile.net. [103.54.236.13])        by mx.google.com with ESMTPS id 41be03b00d2f7-cc50abc16e8si11277872a12.44.2026.09.17.07.17.33        for <VEDANSHRAJ903@gmail.com>        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);        Thu, 17 Sep 2026 07:17:33 -0700 (PDT)"
-            },
-            {
-                "name": "Received-SPF",
-                "value": "pass (google.com: domain of a.1789654653052574799.22228.1156.5.1.0.0.1@comm.hdfcbank.bank.in designates 103.54.236.13 as permitted sender) client-ip=103.54.236.13;"
-            },
-            {
                 "name": "Authentication-Results",
-                "value": "mx.google.com;       dkim=pass header.i=@hdfcbank.bank.in header.s=acls01 header.b=IawsEBVn;       dkim=pass header.i=@aclmobile.net header.s=5nXKKHgBnyGAcLwvMLZIq header.b=przL79dS;       spf=pass (google.com: domain of a.1789654653052574799.22228.1156.5.1.0.0.1@comm.hdfcbank.bank.in designates 103.54.236.13 as permitted sender) smtp.mailfrom=A.1789654653052574799.22228.1156.5.1.0.0.1@comm.hdfcbank.bank.in;       dmarc=pass (p=REJECT sp=REJECT dis=NONE) header.from=hdfcbank.bank.in"
-            },
-            {
-                "name": "Message-ID",
-                "value": "<6aabf67d.2288c3e7.2d4ce6.82b7SMTPIN_ADDED_BROKEN@mx.google.com>"
-            },
-            {
-                "name": "X-Google-Original-Message-ID",
-                "value": "A.1789654653052574799.22228.1156.5.1.0.0.1#VEDANSHRAJ903@GMAIL.COM"
-            },
-            {
-                "name": "DKIM-Signature",
-                "value": "v=1; a=rsa-sha256; d=hdfcbank.bank.in; s=acls01; c=relaxed/relaxed;\tbh=ExL4HSsGLVFVScE0CC2Pn9CNd0aCzlY2Qm2Kowgo1Ew=;\th=content-type:message-id:subject:date:mime-version:to:from; t=1789654653;\tb=IawsEBVn0BJ9numhypAwP09fTIsBMfFtBZrdIU2VULDR5IMQOgoO+qcamI6pCLEtPO1Bqb+dB\t89WX0NjVYV4J6niNmHGHSW/2TQUKr5OZADUXX0slwcedYca0gsxrhUbu/lW/C4TxU6tUclB/iWH\twK9ChAss0hugrg9qYEunF/pjNZiU0MNucnUe/ksqlzOvux8G4zLVcWIwyRJTL8f4FF2RSZmIyi0\tjX99p847R6rgQb3IxaRUEKRIbgblZ/G9SelIPV7zP2d/mvCDrFqmrjjMSzmSOYd2/lpNR45BEiP\tF5MGIrn39ndKyT8iwohL6/jcobVEgJ83E1nPGAmbgumA==;"
-            },
-            {
-                "name": "DKIM-Signature",
-                "value": "v=1; a=rsa-sha256; d=aclmobile.net; s=5nXKKHgBnyGAcLwvMLZIq;\tc=relaxed/relaxed; bh=ExL4HSsGLVFVScE0CC2Pn9CNd0aCzlY2Qm2Kowgo1Ew=;\th=content-type:message-id:subject:date:mime-version:to:from; t=1789654653;\tb=przL79dSVGiWLxMxAvWHisYqfi1gaLyc6KMVW836Tf9Q4dPGaYxCKxSpBXmGH0z9YCxWXGM+3\t9aZah8BpJONB54XbZ5+HBFL/EQRvNoXCUgaLO86mY5lOnMbeE26wXgiTJe3j8uXUUEdRAZyBprz\te8JRKn9xxOP2Opm0IslDspWinj5DDEtMLjZcyxbCKs9BbEMc1X+YkyudS9hn4NTrmyoARmnkhMj\t/KLqOUPHDD5Sc+kILuIIGFm3obzAFyo3mdQeff1+P9ZgBIr3HCnHfG8AQtrmZB2hAGfCUbgI2le\t0sAXiSsne8OMkX1kEOZsgqQrZA93jULhCGuOeOwUiXbA==;"
-            },
-            {
-                "name": "X-Ses-Configuration-Set",
-                "value": "hdfc-c"
-            },
-            {
-                "name": "Mime-Version",
-                "value": "1.0"
-            },
-            {
-                "name": "X-Unique-Id",
-                "value": "A.1789654653052574799.22228.1156.5.1.0.0.1#VEDANSHRAJ903@GMAIL.COM#{\"divid\":\"UPIALRT\",\"environment\":\"DC\",\"msgid\":\"VEDANSHRAJ903@GMAIL.COM0917194732533\"}"
-            },
-            {
-                "name": "Content-Type",
-                "value": "multipart/alternative; boundary=\"0d8bc2d3abb2c4d4e1508d62954eea7583558ede3b0ecca7d440eea69c24\""
-            },
-            {
-                "name": "To",
-                "value": "VEDANSHRAJ903@GMAIL.COM"
-            },
-            {
-                "name": "Subject",
-                "value": "\u2757  You have done a UPI txn. Check details!"
+                "value": "mx.google.com;       dkim=pass header.i=@hdfcbank.bank.in header.s=s1;       spf=pass smtp.mailfrom=hdfcbank.bank.in;       dmarc=pass (p=REJECT sp=REJECT dis=NONE) header.from=hdfcbank.bank.in"
             },
             {
                 "name": "From",
                 "value": "HDFC Bank InstaAlerts <alerts@hdfcbank.bank.in>"
             },
             {
+                "name": "To",
+                "value": "customer@example.com"
+            },
+            {
+                "name": "Subject",
+                "value": "You have done a UPI txn. Check details!"
+            },
+            {
                 "name": "Date",
-                "value": "Thu, 17 Sep 2026 19:47:33 +0530"
+                "value": "Fri, 18 Sep 2026 10:12:00 +0530"
+            },
+            {
+                "name": "Content-Type",
+                "value": "text/plain; charset=\"utf-8\""
             }
         ],
-        "received": [
-            "by 2002:a05:6802:4585:10b0:63c:6897:9e92 with SMTP id ih5-n1csp7441775ocb;        Thu, 17 Sep 2026 07:17:33 -0700 (PDT)",
-            "from o13.smtp-out.aclmobile.net (o13.smtp-out.aclmobile.net. [103.54.236.13])        by mx.google.com with ESMTPS id 41be03b00d2f7-cc50abc16e8si11277872a12.44.2026.09.17.07.17.33        for <VEDANSHRAJ903@gmail.com>        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);        Thu, 17 Sep 2026 07:17:33 -0700 (PDT)"
-        ],
+        "received": [],
         "authentication": {
-            "authentication_results": "mx.google.com;       dkim=pass header.i=@hdfcbank.bank.in header.s=acls01 header.b=IawsEBVn;       dkim=pass header.i=@aclmobile.net header.s=5nXKKHgBnyGAcLwvMLZIq header.b=przL79dS;       spf=pass (google.com: domain of a.1789654653052574799.22228.1156.5.1.0.0.1@comm.hdfcbank.bank.in designates 103.54.236.13 as permitted sender) smtp.mailfrom=A.1789654653052574799.22228.1156.5.1.0.0.1@comm.hdfcbank.bank.in;       dmarc=pass (p=REJECT sp=REJECT dis=NONE) header.from=hdfcbank.bank.in",
-            "dkim_signature": "v=1; a=rsa-sha256; d=hdfcbank.bank.in; s=acls01; c=relaxed/relaxed;\tbh=ExL4HSsGLVFVScE0CC2Pn9CNd0aCzlY2Qm2Kowgo1Ew=;\th=content-type:message-id:subject:date:mime-version:to:from; t=1789654653;\tb=IawsEBVn0BJ9numhypAwP09fTIsBMfFtBZrdIU2VULDR5IMQOgoO+qcamI6pCLEtPO1Bqb+dB\t89WX0NjVYV4J6niNmHGHSW/2TQUKr5OZADUXX0slwcedYca0gsxrhUbu/lW/C4TxU6tUclB/iWH\twK9ChAss0hugrg9qYEunF/pjNZiU0MNucnUe/ksqlzOvux8G4zLVcWIwyRJTL8f4FF2RSZmIyi0\tjX99p847R6rgQb3IxaRUEKRIbgblZ/G9SelIPV7zP2d/mvCDrFqmrjjMSzmSOYd2/lpNR45BEiP\tF5MGIrn39ndKyT8iwohL6/jcobVEgJ83E1nPGAmbgumA==;",
-            "arc_seal": "i=1; a=rsa-sha256; t=1789654653; cv=none;        d=google.com; s=arc-20260327;        b=bOsI1kxezm/U/HOCKoZs4y8IAp6Tt3EB7ieF7MvQqitG+k4aRgtm0iVTcYZQl1tx0M         HPiv3U1ON5aQtOnFELocHDsVxqmkdlwn74Iy2PQlkyOsoLgvLJDMUunKRCKoIXjCijWT         Th1Tr6k3rQReQqjxtzdvyDwztE3WZ7PONeaf5rKnPsZ0HG0Sfr+Y0+wUurVv8n9h9vIG         y9R5EKVAgcB9hpmrqX/hPLH2C5qnzwuqRc7T1NdTe+cGeGIi1AJFsJaXRIgSevWVwwp1         2T56ND1QOwuXDwQ78aEchmet+NM+csqC1O78+5/9B+fOaNh7SK+u+EcJk5amw6euguwH         EecQ==",
-            "arc_message_signature": "i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;        h=date:from:subject:to:mime-version:dkim-signature:dkim-signature         :message-id;        bh=ExL4HSsGLVFVScE0CC2Pn9CNd0aCzlY2Qm2Kowgo1Ew=;        fh=1G6/UlWpmluie5EXVwE2ubCiCfmTaSI2ng+XqchHB6g=;        b=aTtL6Uu7KaH25TWZ68hoQdFNhquKqpE6xBP5YWOjynGucHcZDCAskpk38SbRV/VzYq         5JIUtFZgsIM9ZHoeTE6uy/o5AlUYlZqbuH1Jxi3eKmZckqzwIe95UIl9q/JwyCJF/1ud         hS8MghjNvDTzi014VZ+kR0WQ5fgOrsLQfqT+A0GyvFEOp29Nf0Us3uIqvvFGf17cWG5R         afK7vf5oATz/3u8TjFDplwU0cD9JAdxfFjHTgUuUxV48Ho4sZ7SaWOBqZ/KsaERtFOPN         J37mkSBF/WFtgAkc7J5kmMbpTHbSxaUO5b17Bvgl0OmRzZReBh4Qe2KRiIJBBS8hIX9B         uzOw==;        dara=google.com",
-            "arc_authentication_results": "i=1; mx.google.com;       dkim=pass header.i=@hdfcbank.bank.in header.s=acls01 header.b=IawsEBVn;       dkim=pass header.i=@aclmobile.net header.s=5nXKKHgBnyGAcLwvMLZIq header.b=przL79dS;       spf=pass (google.com: domain of a.1789654653052574799.22228.1156.5.1.0.0.1@comm.hdfcbank.bank.in designates 103.54.236.13 as permitted sender) smtp.mailfrom=A.1789654653052574799.22228.1156.5.1.0.0.1@comm.hdfcbank.bank.in;       dmarc=pass (p=REJECT sp=REJECT dis=NONE) header.from=hdfcbank.bank.in"
+            "authentication_results": "mx.google.com;       dkim=pass header.i=@hdfcbank.bank.in header.s=s1;       spf=pass smtp.mailfrom=hdfcbank.bank.in;       dmarc=pass (p=REJECT sp=REJECT dis=NONE) header.from=hdfcbank.bank.in",
+            "dkim_signature": null,
+            "arc_seal": null,
+            "arc_message_signature": null,
+            "arc_authentication_results": null
         },
         "body": {
-            "plain_text": "",
-            "html": "<!doctype html>\r\n<html>\r\n\r\n<head>\r\n    <meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\">\r\n    <meta name=\"viewport\" content=\"target-densitydpi=device-dpi\">\r\n    <meta name=\"viewport\" content=\"width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;\">\r\n    <meta name=\"apple-mobile-web-app-capable\" content=\"yes\">\r\n    <meta name=\"HandheldFriendly\" content=\"true\">\r\n    <meta name=\"MobileOptimized\" content=\"width\">\r\n    <title>HDFC BANK</title><!-- Facebook sharing information tags -->\r\n    <!--<meta property=\"og:title\" content=\"HDFC BANK\" />-->\r\n    <style type=\"text/css\">\r\n        @media screen and (min-device-width: 320px) and (max-device-width: 768px) {\r\n            table {\r\n                width: 100%;\r\n            }\r\n\r\n            .td {\r\n                padding: 0px 25px;\r\n                text-align: left;\r\n            }\r\n\r\n            .heading {\r\n                text-align: center;\r\n                padding: 0px 25px;\r\n            }\r\n\r\n            .cta {\r\n                padding: 0px 25px;\r\n                text-align: center;\r\n            }\r\n        }\r\n    </style>\r\n</head>\r\n\r\n<body data-new-gr-c-s-loaded=\"14.1101.0\">\r\n    <table width=\"600\" border=\"0\" cellspacing=\"0\" cellpadding=\"0\" align=\"center\">\r\n        <tbody>\r\n\t\t\t  <tr>\r\n                <td style=\"border-bottom:1px solid #cccccc; border-top:1px solid #cccccc; border-left:1px solid #cccccc;border-right:1px solid #cccccc;\">\r\n                    <table width=\"100%\" border=\"0\" cellspacing=\"0\" cellpadding=\"0\">\r\n                        <tbody>\r\n                            <tr>\r\n                                <td valign=\"top\" bgcolor=\"#dcddde\" style=\"line-height:0px;background-color:#dcddde; border-left:1px solid #dcddde;\"><a href=\"https://trkt.aclemails.com/v1/r/87Mkwm%2BZDtanQuDEuhuhwMWbhDaoPMLASBWmh7PmpZC0K7nyyq7iBvs%2BtUG6gp62eKzNaoUXGOu%2BlHcEnHjTI1K4NmHSvXyxVnXb1T2KFbYwXCKcFFqDu3JZ99zRLsEUoVMy60tVJuWbuErhfEBQ0afA7udoQP4ExghITR%2B1TKmjJWh624lMG%2FqpbPIpskz9r3InDTYSOEaw3sw%2Fe0Wi%2FsfdnZd%2FIIiWmpmEQLT1p6XYSX%2FKN%2FncSZRN4FolUW8qSTiwUiAqAnMtNLQOz64vBwlS16hWgX9wi6fThaXmID1x0WWdW2PZkltA0%2BaOuMUOfjQdjqty9achLeHgNO8gkMWO3GwOn%2Bck%2FmLB6ZHZ%2FTF74Qux3n6twQgoE1W4LrR1TWA4hZNj\" \r\n\r\ntarget=\"_blank\"><img src=\"https://img.pinchappmails.com/hdfc/images/2026/aug/HDFC-Bank-Banner-Update-2026-08-20.png\" style=\"display: block; vertical-align: top\" alt width=\"100%\" border=\"0\"></a></td>\r\n                            </tr>\r\n                        </tbody>\r\n                    </table>\r\n                </td>\r\n            </tr>\r\n            <tr>\r\n                <td height=\"20\"></td>\r\n            </tr>\r\n            <tr>\r\n                <td valign=\"top\" bgcolor=\"#dcddde\" style=\"line-height:0px;background-color:#dcddde; border-left:1px solid #dcddde;\"><img src=\"https://wgjpss.stripocdn.email/content/guids/CABINET_d17330eb5cbe5af68cf444e0d9b181ad116d88b22fb8b3fd1c93e1846c59af76/images/nmbandnew.jpg\" alt width=\"100%\" border=\"0\"></td>\r\n            </tr>\r\n            <tr>\r\n                <td>\r\n                    <table width=\"100%\" border=\"0\" cellspacing=\"0\" cellpadding=\"0\">\r\n                        <tbody>\r\n                            <tr>\r\n                                <td valign=\"top\" align=\"center\">\r\n                                    <table align=\"center\" width=\"550\" border=\"0\" cellspacing=\"0\" cellpadding=\"0\">\r\n                                        <tbody>\r\n                                            <tr>\r\n                                                <td width=\"550\" valign=\"top\" align=\"center\">\r\n                                                    <table align=\"center\" width=\"100%\" border=\"0\" cellspacing=\"0\" cellpadding=\"0\" style=\"width:100% !important; text-align: center\">\r\n                                                        <tbody>\r\n                                                            <tr>\r\n                                                                <td height=\"15\"></td>\r\n                                                            </tr>\r\n                                                        </tbody>\r\n                                                    </table>\r\n                                                </td>\r\n                                            </tr>\r\n                                        </tbody>\r\n                                    </table>\r\n                                </td>\r\n                            </tr>\r\n                        </tbody>\r\n                    </table>\r\n                </td>\r\n            </tr>\r\n            <tr>\r\n                <td>\r\n                    <table width=\"100%\" border=\"0\" cellspacing=\"0\" cellpadding=\"0\">\r\n                        <tbody>\r\n                            <tr>\r\n                                <td valign=\"top\" align=\"center\">\r\n                                    <table align=\"center\" width=\"550\" border=\"0\" cellspacing=\"0\" cellpadding=\"0\">\r\n                                        <tbody>\r\n                                            <tr>\r\n                                                <td width=\"550\" valign=\"top\" align=\"center\">\r\n                                                    <table align=\"center\" width=\"100%\" border=\"0\" cellspacing=\"0\" cellpadding=\"0\" style=\"width:100% !important; text-align: center\">\r\n                                                        <tbody>\r\n                                                            <tr>\r\n                                                                <td height></td>\r\n                                                            </tr>\r\n                                                            <tr>\r\n                                                                <td align=\"left\" valign=\"middle\" style=\"font-family:Arial; font-size:16px; line-height:22px; color:#000; font-weight: normal; text-align: left\" class=\"td esd-text\">Dear Customer,<br><br>Greetings from HDFC Bank!<br><br>Rs.320.00 is debited from your account ending 3444 towards VPA vedanshraj903-1@okicici (vedanshraj903-1@okicici) on 17-09-26.<br><br>UPI transaction reference no.: 626042473206.<br><br>If you did not authorize this transaction, please report it immediately at: <br>a. When in India (Toll free): 1800 258 6161 <br>b. When abroad:  9122 61606160 <br>c. Or SMS 'BLOCK UPI' to 7308080808.<br><br>We're here to support you in every step of the way.<br><br>Warm regards,<br>HDFC Bank\r\n\r\n</td>\r\n                                                            </tr>\r\n                                                            <tr>\r\n                                                                <td height=\"25\"></td>\r\n                                                            </tr>\r\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\r\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<tr>\r\n                                                                <td align=\"left\" valign=\"middle\" style=\"font-family:Arial; font-size:16px; line-height:22px; color:#000; font-weight: normal; text-align: left\" class=\"td esd-text\">\r\n\r\n</td>\r\n                                                            </tr>\r\n                                                            <tr>\r\n                                                                <td height=\"25\"></td>\r\n                                                            </tr>\r\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<tr>\r\n                                                                <td align=\"left\" valign=\"middle\" style=\"font-family:Arial; font-size:16px; line-height:22px; color:#000; font-weight: normal; text-align: left; border-bottom: 2px solid #cccccc; padding-bottom: 0px\" class=\"td esd-text\">\r\n</td>\r\n                                                            </tr>\r\n                                                            <tr>\r\n                                                                <td height=\"15\"></td>\r\n                                                            </tr>\r\n                                                        </tbody>\r\n                                                    </table>\r\n                                                </td>\r\n                                            </tr>\r\n                                        </tbody>\r\n                                    </table>\r\n                                </td>\r\n                            </tr>\r\n                        </tbody>\r\n                    </table>\r\n                </td>\r\n            </tr>\r\n          <tr>\r\n                <td valign=\"top\"  style=\"line-height:0px; border-left:0px solid #dcddde; padding-bottom: 5px\"><img src=\"https://img.pinchappmails.com/hdfc/images/2025/dec/Digital-Arrest-Scam_Insta-Alert-Banner_600-x-60_Sep%2725+(1)+(1).jpg\" alt width=\"100%\" border=\"0\"></td>\r\n            </tr>\r\n            \r\n            <tr>\r\n                <td style=\"font-family:Arial,Helvetica,sans-serif;color:#000000;padding-bottom:5px;padding-top:5px;text-align:left;font-size:12px;border:none;line-height:12px;padding-left:15px;padding-right:15px\" align=\"left\" class=\"esd-text\">For more details on Service charges and Fees, <a href=\"https://trkt.aclemails.com/v1/r/QtdoI5ImZdEwMjliCcjeYY1FJWgxl0xU7Qv8XJpXKckE2k6y%2BsvY%2FJ0MJ2nC142N6M5mmz2C%2Ff3C9%2F82HXn55D%2BzoQGxePfNgmtJNFsZsUFzPvz4Afvcor4ousTWsgFPKsyuJB%2Bfovz528i8Tl3vpmthwghfC74dKSse57j9V2%2Fp2pZjX51CXo%2Fc1D8O%2BLtvKWAhHlPJApnwTR6gQR0AScQk8VqIyWFwo2wcZwJKOu3AUaRQGAvBQp8WQs5ED8xJlMQO1UwdWVj0nzpsUnzBNvwMw%2FPLF3345bkgFZk3H3A7lOLBQJK2cz82G7ISOfRpaHvTuabNRLYsqRAPf2We\" style=\"text-decoration:underline;color:#004b8d;outline:none\" target=\"_blank\"><strong> click here.</strong></a></td>\r\n            </tr>\r\n            \r\n            \r\n            <tr>\r\n                <td style=\"font-family:Arial,Helvetica,sans-serif;color:#000000;text-align:left;font-size:12px;border:none;padding-left:15px\" align=\"left\" width=\"30%\" class=\"esd-text\">\u00a9 HDFC Bank <span style=\"font-size: 3px\"></span></td>\r\n            </tr>\r\n\t\t\t  \r\n           \r\n        </tbody>\r\n    </table>\r\n</body>\r\n\r\n</html><img src=\"https://trkt.aclemails.com/v1/w/wZstUCBYs5vfV1Qwa8zu0fmGy3BtDR%2BV4jKPXDKtqzIIqSs31def4G4WplfY9OWl7pQIOJQwvNRjkJNZ81bpXRUC8s%2FpsQQIVM%2FsNFKdTuH5ZnLTJFKeji8AWZfCpF5nBGJduch%2FZXuqlza6BdzTiIykkaEjHAFIWrCH9m%2B0SfxUSM0dsTSmVN8bOWXwj9%2Fh2cSjyry4plgP%2FBoroWIex%2BMuRYoCSPekw0LhXhjPiuw7yDEMICRlKVLIEQ%3D%3D\"  width=\"1\" height=\"1\" border=\"0\">"
+            "plain_text": "Dear Customer, Rs.250.00 has been debited from your account ending 1234 towards a UPI transaction. If you did not authorize this transaction, please call our toll free number immediately. Warm regards, HDFC Bank\n",
+            "html": ""
         },
         "indicators": {
-            "ips": [
-                "09.17.07.17",
-                "103.54.236.13",
-                "5.1.0.0"
-            ],
-            "urls": [
-                "https://img.pinchappmail=",
-                "https://img.pinchappmails.com/hdfc/images/202=",
-                "https://trkt.aclemails.com/v1/r/87Mkwm%2BZDtanQuDEuhuhwMWbhD=",
-                "https://trkt.aclemails.com/v1/r/QtdoI5ImZdEwMjliCcjeYY1FJWgxl0xU7Qv8X=",
-                "https://trkt.aclemails.com/v1/w/wZstUCBYs5vfV1Qwa8zu0fmG=",
-                "https://wgjpss.stripocdn.email/content/guids/CABINET_d17330eb5cbe5af68cf444="
-            ],
+            "ips": [],
+            "urls": [],
             "domains": [
-                "GMAIL.COM",
-                "GMAIL.COM0917194732533",
-                "comm.hdfcbank.bank.in",
-                "gmail.com",
-                "hdfcbank.bank.in",
-                "mx.google.com"
+                "example.com",
+                "hdfcbank.bank.in"
             ]
         },
         "attachments": [],
         "evidence": {
-            "original_email_sha256": "df01c8c5e08254e12615d5e7da38c345613c7cd8427ec7fe8fd33f19276ca0b7",
-            "parser_timestamp": "2026-09-18T05:42:25.850354+00:00"
+            "original_email_sha256": "c08fa8a1683ab107afcb9cdfcaafeaaa91e72d68622342cd8bc045b05f74606e",
+            "parser_timestamp": "2026-09-18T09:32:30.992278+00:00"
         }
     },
     "security_analysis": {
         "tool": "MailTraceAI",
         "analysis_version": "2.0",
-        "analysis_timestamp": "2026-09-18T05:42:25.855402+00:00",
-        "email_file": "uploads\\11ad3e9863f14065900a718ffd7e0b66.eml",
+        "analysis_timestamp": "2026-09-18T09:32:30.994287+00:00",
+        "email_file": "uploads/8bb64a7eac5c4999b762309966378296.eml",
         "evidence": {
-            "original_email_sha256": "df01c8c5e08254e12615d5e7da38c345613c7cd8427ec7fe8fd33f19276ca0b7"
+            "original_email_sha256": "c08fa8a1683ab107afcb9cdfcaafeaaa91e72d68622342cd8bc045b05f74606e"
         },
         "identity": {
             "from": "HDFC Bank InstaAlerts <alerts@hdfcbank.bank.in>",
             "from_email": "alerts@hdfcbank.bank.in",
-            "to": "VEDANSHRAJ903@GMAIL.COM",
+            "to": "customer@example.com",
             "cc": null,
             "reply_to": null,
-            "return_path": "<A.1789654653052574799.22228.1156.5.1.0.0.1@comm.hdfcbank.bank.in>",
-            "subject": "\u2757  You have done a UPI txn. Check details!",
-            "message_id": "<6aabf67d.2288c3e7.2d4ce6.82b7SMTPIN_ADDED_BROKEN@mx.google.com>",
-            "date": "Thu, 17 Sep 2026 19:47:33 +0530"
+            "return_path": null,
+            "subject": "You have done a UPI txn. Check details!",
+            "message_id": null,
+            "date": "Fri, 18 Sep 2026 10:12:00 +0530",
+            "date_utc_offset": "+05:30"
         },
         "routing": {
-            "received_header_count": 2,
-            "received_headers": [
-                "by 2002:a05:6802:4585:10b0:63c:6897:9e92 with SMTP id ih5-n1csp7441775ocb;        Thu, 17 Sep 2026 07:17:33 -0700 (PDT)",
-                "from o13.smtp-out.aclmobile.net (o13.smtp-out.aclmobile.net. [103.54.236.13])        by mx.google.com with ESMTPS id 41be03b00d2f7-cc50abc16e8si11277872a12.44.2026.09.17.07.17.33        for <VEDANSHRAJ903@gmail.com>        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);        Thu, 17 Sep 2026 07:17:33 -0700 (PDT)"
-            ],
-            "relay_path": [
-                {
-                    "hop": 1,
-                    "ip": "103.54.236.13",
-                    "classification": "PUBLIC",
-                    "raw": "from o13.smtp-out.aclmobile.net (o13.smtp-out.aclmobile.net. [103.54.236.13])        by mx.google.com with ESMTPS id 41be03b00d2f7-cc50abc16e8si11277872a12.44.2026.09.17.07.17.33        for <VEDANSHRAJ903@gmail.com>        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);        Thu, 17 Sep 2026 07:17:33 -0700 (PDT)"
-                },
-                {
-                    "hop": 2,
-                    "ip": "09.17.07.17",
-                    "classification": "INVALID",
-                    "raw": "from o13.smtp-out.aclmobile.net (o13.smtp-out.aclmobile.net. [103.54.236.13])        by mx.google.com with ESMTPS id 41be03b00d2f7-cc50abc16e8si11277872a12.44.2026.09.17.07.17.33        for <VEDANSHRAJ903@gmail.com>        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);        Thu, 17 Sep 2026 07:17:33 -0700 (PDT)"
-                }
-            ],
-            "ips": [
-                {
-                    "ip": "09.17.07.17",
-                    "classification": "INVALID"
-                },
-                {
-                    "ip": "103.54.236.13",
-                    "classification": "PUBLIC"
-                },
-                {
-                    "ip": "5.1.0.0",
-                    "classification": "PUBLIC"
-                }
-            ],
-            "public_infrastructure_ips": [
-                "103.54.236.13",
-                "5.1.0.0"
-            ]
+            "received_header_count": 0,
+            "received_headers": [],
+            "relay_path": [],
+            "ips": [],
+            "public_infrastructure_ips": []
         },
         "authentication": {
-            "authentication_results": "mx.google.com;       dkim=pass header.i=@hdfcbank.bank.in header.s=acls01 header.b=IawsEBVn;       dkim=pass header.i=@aclmobile.net header.s=5nXKKHgBnyGAcLwvMLZIq header.b=przL79dS;       spf=pass (google.com: domain of a.1789654653052574799.22228.1156.5.1.0.0.1@comm.hdfcbank.bank.in designates 103.54.236.13 as permitted sender) smtp.mailfrom=A.1789654653052574799.22228.1156.5.1.0.0.1@comm.hdfcbank.bank.in;       dmarc=pass (p=REJECT sp=REJECT dis=NONE) header.from=hdfcbank.bank.in",
+            "authentication_results": "mx.google.com;       dkim=pass header.i=@hdfcbank.bank.in header.s=s1;       spf=pass smtp.mailfrom=hdfcbank.bank.in;       dmarc=pass (p=REJECT sp=REJECT dis=NONE) header.from=hdfcbank.bank.in",
             "spf": "PASS",
             "dkim": "PASS",
             "dmarc": "PASS",
-            "arc": "AVAILABLE"
+            "arc": "NOT_AVAILABLE"
         },
         "sender_consistency": {
             "from_reply_to": "NOT_AVAILABLE",
-            "from_return_path": "MISMATCH"
+            "from_return_path": "NOT_AVAILABLE"
         },
         "urls": {
-            "total": 6,
+            "total": 0,
             "http_count": 0,
-            "https_count": 6,
+            "https_count": 0,
             "at_symbol_count": 0,
-            "details": [
-                {
-                    "url": "https://img.pinchappmail=",
-                    "scheme": "https",
-                    "domain": "img.pinchappmail=",
-                    "contains_at_symbol": false
-                },
-                {
-                    "url": "https://img.pinchappmails.com/hdfc/images/202=",
-                    "scheme": "https",
-                    "domain": "img.pinchappmails.com",
-                    "contains_at_symbol": false
-                },
-                {
-                    "url": "https://trkt.aclemails.com/v1/r/87Mkwm%2BZDtanQuDEuhuhwMWbhD=",
-                    "scheme": "https",
-                    "domain": "trkt.aclemails.com",
-                    "contains_at_symbol": false
-                },
-                {
-                    "url": "https://trkt.aclemails.com/v1/r/QtdoI5ImZdEwMjliCcjeYY1FJWgxl0xU7Qv8X=",
-                    "scheme": "https",
-                    "domain": "trkt.aclemails.com",
-                    "contains_at_symbol": false
-                },
-                {
-                    "url": "https://trkt.aclemails.com/v1/w/wZstUCBYs5vfV1Qwa8zu0fmG=",
-                    "scheme": "https",
-                    "domain": "trkt.aclemails.com",
-                    "contains_at_symbol": false
-                },
-                {
-                    "url": "https://wgjpss.stripocdn.email/content/guids/CABINET_d17330eb5cbe5af68cf444=",
-                    "scheme": "https",
-                    "domain": "wgjpss.stripocdn.email",
-                    "contains_at_symbol": false
-                }
-            ],
-            "domains": [
-                "img.pinchappmail=",
-                "img.pinchappmails.com",
-                "trkt.aclemails.com",
-                "wgjpss.stripocdn.email"
-            ]
+            "details": [],
+            "domains": []
         },
         "domains": [
-            "GMAIL.COM",
-            "GMAIL.COM0917194732533",
-            "comm.hdfcbank.bank.in",
-            "gmail.com",
-            "hdfcbank.bank.in",
-            "img.pinchappmail=",
-            "img.pinchappmails.com",
-            "mx.google.com",
-            "trkt.aclemails.com",
-            "wgjpss.stripocdn.email"
+            "example.com",
+            "hdfcbank.bank.in"
         ],
         "attachments": {
             "count": 0,
             "items": []
         },
         "security_signals": {
-            "total": 1,
-            "signals": [
-                {
-                    "type": "FROM_RETURN_PATH_MISMATCH",
-                    "severity": "MEDIUM",
-                    "description": "From and Return-Path domains do not match.",
-                    "count": 1
-                }
-            ]
+            "total": 0,
+            "signals": []
         }
     },
     "threat_intelligence": {
         "tool": "MailTraceAI",
         "threat_intelligence_version": "3.0",
-        "analysis_timestamp": "2026-09-18T05:42:25.855616+00:00",
+        "analysis_timestamp": "2026-09-18T09:32:30.994339+00:00",
         "email": {
-            "file": "uploads\\11ad3e9863f14065900a718ffd7e0b66.eml",
-            "sha256": "df01c8c5e08254e12615d5e7da38c345613c7cd8427ec7fe8fd33f19276ca0b7"
+            "file": "uploads/8bb64a7eac5c4999b762309966378296.eml",
+            "sha256": "c08fa8a1683ab107afcb9cdfcaafeaaa91e72d68622342cd8bc045b05f74606e"
         },
         "ip_intelligence": {
-            "total_ips_checked": 2,
-            "results": [
-                {
-                    "ip": "103.54.236.13",
-                    "virustotal": {
-                        "status": "NOT_CONFIGURED",
-                        "ip": "103.54.236.13"
-                    },
-                    "abuseipdb": {
-                        "status": "NOT_CONFIGURED",
-                        "ip": "103.54.236.13"
-                    }
-                },
-                {
-                    "ip": "5.1.0.0",
-                    "virustotal": {
-                        "status": "NOT_CONFIGURED",
-                        "ip": "5.1.0.0"
-                    },
-                    "abuseipdb": {
-                        "status": "NOT_CONFIGURED",
-                        "ip": "5.1.0.0"
-                    }
-                }
-            ]
+            "total_ips_checked": 0,
+            "results": []
         },
         "domain_intelligence": {
-            "total_domains_checked": 10,
+            "total_domains_checked": 2,
             "results": [
                 {
-                    "domain": "img.pinchappmail=",
+                    "domain": "example.com",
                     "virustotal": {
                         "status": "NOT_CONFIGURED",
-                        "domain": "img.pinchappmail="
-                    }
-                },
-                {
-                    "domain": "img.pinchappmails.com",
-                    "virustotal": {
-                        "status": "NOT_CONFIGURED",
-                        "domain": "img.pinchappmails.com"
-                    }
-                },
-                {
-                    "domain": "trkt.aclemails.com",
-                    "virustotal": {
-                        "status": "NOT_CONFIGURED",
-                        "domain": "trkt.aclemails.com"
-                    }
-                },
-                {
-                    "domain": "wgjpss.stripocdn.email",
-                    "virustotal": {
-                        "status": "NOT_CONFIGURED",
-                        "domain": "wgjpss.stripocdn.email"
-                    }
-                },
-                {
-                    "domain": "GMAIL.COM",
-                    "virustotal": {
-                        "status": "NOT_CONFIGURED",
-                        "domain": "GMAIL.COM"
-                    }
-                },
-                {
-                    "domain": "GMAIL.COM0917194732533",
-                    "virustotal": {
-                        "status": "NOT_CONFIGURED",
-                        "domain": "GMAIL.COM0917194732533"
-                    }
-                },
-                {
-                    "domain": "comm.hdfcbank.bank.in",
-                    "virustotal": {
-                        "status": "NOT_CONFIGURED",
-                        "domain": "comm.hdfcbank.bank.in"
-                    }
-                },
-                {
-                    "domain": "gmail.com",
-                    "virustotal": {
-                        "status": "NOT_CONFIGURED",
-                        "domain": "gmail.com"
+                        "domain": "example.com"
                     }
                 },
                 {
@@ -391,102 +149,27 @@
                         "status": "NOT_CONFIGURED",
                         "domain": "hdfcbank.bank.in"
                     }
-                },
-                {
-                    "domain": "mx.google.com",
-                    "virustotal": {
-                        "status": "NOT_CONFIGURED",
-                        "domain": "mx.google.com"
-                    }
                 }
             ]
         },
         "url_intelligence": {
-            "total_urls_checked": 6,
-            "results": [
-                {
-                    "url": "https://img.pinchappmail=",
-                    "virustotal": {
-                        "status": "NOT_CONFIGURED",
-                        "url": "https://img.pinchappmail="
-                    }
-                },
-                {
-                    "url": "https://img.pinchappmails.com/hdfc/images/202=",
-                    "virustotal": {
-                        "status": "NOT_CONFIGURED",
-                        "url": "https://img.pinchappmails.com/hdfc/images/202="
-                    }
-                },
-                {
-                    "url": "https://trkt.aclemails.com/v1/r/87Mkwm%2BZDtanQuDEuhuhwMWbhD=",
-                    "virustotal": {
-                        "status": "NOT_CONFIGURED",
-                        "url": "https://trkt.aclemails.com/v1/r/87Mkwm%2BZDtanQuDEuhuhwMWbhD="
-                    }
-                },
-                {
-                    "url": "https://trkt.aclemails.com/v1/r/QtdoI5ImZdEwMjliCcjeYY1FJWgxl0xU7Qv8X=",
-                    "virustotal": {
-                        "status": "NOT_CONFIGURED",
-                        "url": "https://trkt.aclemails.com/v1/r/QtdoI5ImZdEwMjliCcjeYY1FJWgxl0xU7Qv8X="
-                    }
-                },
-                {
-                    "url": "https://trkt.aclemails.com/v1/w/wZstUCBYs5vfV1Qwa8zu0fmG=",
-                    "virustotal": {
-                        "status": "NOT_CONFIGURED",
-                        "url": "https://trkt.aclemails.com/v1/w/wZstUCBYs5vfV1Qwa8zu0fmG="
-                    }
-                },
-                {
-                    "url": "https://wgjpss.stripocdn.email/content/guids/CABINET_d17330eb5cbe5af68cf444=",
-                    "virustotal": {
-                        "status": "NOT_CONFIGURED",
-                        "url": "https://wgjpss.stripocdn.email/content/guids/CABINET_d17330eb5cbe5af68cf444="
-                    }
-                }
-            ]
+            "total_urls_checked": 0,
+            "results": []
         }
     },
-    "geolocation": [
-        {
-            "ip": "103.54.236.13",
-            "status": "SUCCESS",
-            "country": "India",
-            "country_code": "IN",
-            "continent": "Asia",
-            "continent_code": "AS",
-            "asn": "AS16509",
-            "asn_name": "Amazon.com, Inc.",
-            "asn_domain": "amazon.com",
-            "source": "IPinfo Lite"
-        },
-        {
-            "ip": "5.1.0.0",
-            "status": "SUCCESS",
-            "country": "Ukraine",
-            "country_code": "UA",
-            "continent": "Europe",
-            "continent_code": "EU",
-            "asn": "AS31520",
-            "asn_name": "Datagroup Retail",
-            "asn_domain": "datagroup.ua",
-            "source": "IPinfo Lite"
-        }
-    ],
+    "geolocation": [],
     "investigation_graph": {
         "graph_version": "1.2",
-        "node_count": 26,
-        "edge_count": 19,
+        "node_count": 4,
+        "edge_count": 1,
         "nodes": [
             {
                 "id": "email:primary",
                 "type": "EMAIL",
-                "label": "\u2757  You have done a UPI txn. Check details!",
+                "label": "You have done a UPI txn. Check details!",
                 "properties": {
-                    "message_id": "<6aabf67d.2288c3e7.2d4ce6.82b7SMTPIN_ADDED_BROKEN@mx.google.com>",
-                    "date": "Thu, 17 Sep 2026 19:47:33 +0530"
+                    "message_id": null,
+                    "date": "Fri, 18 Sep 2026 10:12:00 +0530"
                 }
             },
             {
@@ -496,27 +179,9 @@
                 "properties": {}
             },
             {
-                "id": "domain:GMAIL.COM",
+                "id": "domain:example.com",
                 "type": "DOMAIN",
-                "label": "GMAIL.COM",
-                "properties": {}
-            },
-            {
-                "id": "domain:GMAIL.COM0917194732533",
-                "type": "DOMAIN",
-                "label": "GMAIL.COM0917194732533",
-                "properties": {}
-            },
-            {
-                "id": "domain:comm.hdfcbank.bank.in",
-                "type": "DOMAIN",
-                "label": "comm.hdfcbank.bank.in",
-                "properties": {}
-            },
-            {
-                "id": "domain:gmail.com",
-                "type": "DOMAIN",
-                "label": "gmail.com",
+                "label": "example.com",
                 "properties": {}
             },
             {
@@ -524,162 +189,6 @@
                 "type": "DOMAIN",
                 "label": "hdfcbank.bank.in",
                 "properties": {}
-            },
-            {
-                "id": "domain:img.pinchappmail=",
-                "type": "DOMAIN",
-                "label": "img.pinchappmail=",
-                "properties": {}
-            },
-            {
-                "id": "domain:img.pinchappmails.com",
-                "type": "DOMAIN",
-                "label": "img.pinchappmails.com",
-                "properties": {}
-            },
-            {
-                "id": "domain:mx.google.com",
-                "type": "DOMAIN",
-                "label": "mx.google.com",
-                "properties": {}
-            },
-            {
-                "id": "domain:trkt.aclemails.com",
-                "type": "DOMAIN",
-                "label": "trkt.aclemails.com",
-                "properties": {}
-            },
-            {
-                "id": "domain:wgjpss.stripocdn.email",
-                "type": "DOMAIN",
-                "label": "wgjpss.stripocdn.email",
-                "properties": {}
-            },
-            {
-                "id": "url:0",
-                "type": "URL",
-                "label": "https://img.pinchappmail=",
-                "properties": {
-                    "scheme": "https",
-                    "domain": "img.pinchappmail=",
-                    "contains_at_symbol": false
-                }
-            },
-            {
-                "id": "url:1",
-                "type": "URL",
-                "label": "https://img.pinchappmails.com/hdfc/images/202=",
-                "properties": {
-                    "scheme": "https",
-                    "domain": "img.pinchappmails.com",
-                    "contains_at_symbol": false
-                }
-            },
-            {
-                "id": "url:2",
-                "type": "URL",
-                "label": "https://trkt.aclemails.com/v1/r/87Mkwm%2BZDtanQuDEuhuhwMWbhD=",
-                "properties": {
-                    "scheme": "https",
-                    "domain": "trkt.aclemails.com",
-                    "contains_at_symbol": false
-                }
-            },
-            {
-                "id": "url:3",
-                "type": "URL",
-                "label": "https://trkt.aclemails.com/v1/r/QtdoI5ImZdEwMjliCcjeYY1FJWgxl0xU7Qv8X=",
-                "properties": {
-                    "scheme": "https",
-                    "domain": "trkt.aclemails.com",
-                    "contains_at_symbol": false
-                }
-            },
-            {
-                "id": "url:4",
-                "type": "URL",
-                "label": "https://trkt.aclemails.com/v1/w/wZstUCBYs5vfV1Qwa8zu0fmG=",
-                "properties": {
-                    "scheme": "https",
-                    "domain": "trkt.aclemails.com",
-                    "contains_at_symbol": false
-                }
-            },
-            {
-                "id": "url:5",
-                "type": "URL",
-                "label": "https://wgjpss.stripocdn.email/content/guids/CABINET_d17330eb5cbe5af68cf444=",
-                "properties": {
-                    "scheme": "https",
-                    "domain": "wgjpss.stripocdn.email",
-                    "contains_at_symbol": false
-                }
-            },
-            {
-                "id": "ip:103.54.236.13",
-                "type": "IP",
-                "label": "103.54.236.13",
-                "properties": {
-                    "classification": "PUBLIC"
-                }
-            },
-            {
-                "id": "ip:5.1.0.0",
-                "type": "IP",
-                "label": "5.1.0.0",
-                "properties": {}
-            },
-            {
-                "id": "relay:o13.smtp-out.aclmobile.net",
-                "type": "RELAY_HOST",
-                "label": "o13.smtp-out.aclmobile.net",
-                "properties": {
-                    "hop": 2,
-                    "ip": "09.17.07.17",
-                    "classification": "INVALID"
-                }
-            },
-            {
-                "id": "ip:09.17.07.17",
-                "type": "IP",
-                "label": "09.17.07.17",
-                "properties": {
-                    "classification": "INVALID"
-                }
-            },
-            {
-                "id": "country:IN",
-                "type": "COUNTRY",
-                "label": "India",
-                "properties": {
-                    "country_code": "IN"
-                }
-            },
-            {
-                "id": "asn:AS16509",
-                "type": "ASN",
-                "label": "AS16509",
-                "properties": {
-                    "name": "Amazon.com, Inc.",
-                    "domain": "amazon.com"
-                }
-            },
-            {
-                "id": "country:UA",
-                "type": "COUNTRY",
-                "label": "Ukraine",
-                "properties": {
-                    "country_code": "UA"
-                }
-            },
-            {
-                "id": "asn:AS31520",
-                "type": "ASN",
-                "label": "AS31520",
-                "properties": {
-                    "name": "Datagroup Retail",
-                    "domain": "datagroup.ua"
-                }
             }
         ],
         "edges": [
@@ -688,166 +197,48 @@
                 "target": "sender:HDFC Bank InstaAlerts <alerts@hdfcbank.bank.in>",
                 "relationship": "SENT_BY",
                 "properties": {}
-            },
-            {
-                "source": "email:primary",
-                "target": "url:0",
-                "relationship": "CONTAINS",
-                "properties": {}
-            },
-            {
-                "source": "url:0",
-                "target": "domain:img.pinchappmail=",
-                "relationship": "USES_DOMAIN",
-                "properties": {}
-            },
-            {
-                "source": "email:primary",
-                "target": "url:1",
-                "relationship": "CONTAINS",
-                "properties": {}
-            },
-            {
-                "source": "url:1",
-                "target": "domain:img.pinchappmails.com",
-                "relationship": "USES_DOMAIN",
-                "properties": {}
-            },
-            {
-                "source": "email:primary",
-                "target": "url:2",
-                "relationship": "CONTAINS",
-                "properties": {}
-            },
-            {
-                "source": "url:2",
-                "target": "domain:trkt.aclemails.com",
-                "relationship": "USES_DOMAIN",
-                "properties": {}
-            },
-            {
-                "source": "email:primary",
-                "target": "url:3",
-                "relationship": "CONTAINS",
-                "properties": {}
-            },
-            {
-                "source": "url:3",
-                "target": "domain:trkt.aclemails.com",
-                "relationship": "USES_DOMAIN",
-                "properties": {}
-            },
-            {
-                "source": "email:primary",
-                "target": "url:4",
-                "relationship": "CONTAINS",
-                "properties": {}
-            },
-            {
-                "source": "url:4",
-                "target": "domain:trkt.aclemails.com",
-                "relationship": "USES_DOMAIN",
-                "properties": {}
-            },
-            {
-                "source": "email:primary",
-                "target": "url:5",
-                "relationship": "CONTAINS",
-                "properties": {}
-            },
-            {
-                "source": "url:5",
-                "target": "domain:wgjpss.stripocdn.email",
-                "relationship": "USES_DOMAIN",
-                "properties": {}
-            },
-            {
-                "source": "relay:o13.smtp-out.aclmobile.net",
-                "target": "ip:103.54.236.13",
-                "relationship": "OBSERVED_AT",
-                "properties": {
-                    "hop": 1,
-                    "classification": "PUBLIC",
-                    "header_warning": null
-                }
-            },
-            {
-                "source": "relay:o13.smtp-out.aclmobile.net",
-                "target": "ip:09.17.07.17",
-                "relationship": "OBSERVED_AT",
-                "properties": {
-                    "hop": 2,
-                    "classification": "INVALID",
-                    "header_warning": null
-                }
-            },
-            {
-                "source": "ip:103.54.236.13",
-                "target": "country:IN",
-                "relationship": "LOCATED_IN",
-                "properties": {}
-            },
-            {
-                "source": "ip:103.54.236.13",
-                "target": "asn:AS16509",
-                "relationship": "ANNOUNCED_BY",
-                "properties": {}
-            },
-            {
-                "source": "ip:5.1.0.0",
-                "target": "country:UA",
-                "relationship": "LOCATED_IN",
-                "properties": {}
-            },
-            {
-                "source": "ip:5.1.0.0",
-                "target": "asn:AS31520",
-                "relationship": "ANNOUNCED_BY",
-                "properties": {}
             }
         ]
     },
     "risk_assessment": {
         "tool": "MailTraceAI",
-        "risk_engine_version": "3.0",
-        "analysis_timestamp": "2026-09-18T05:42:27.505652+00:00",
+        "risk_engine_version": "3.1",
+        "analysis_timestamp": "2026-09-18T09:32:31.398065+00:00",
         "email": {
-            "file": "uploads\\11ad3e9863f14065900a718ffd7e0b66.eml",
-            "sha256": "df01c8c5e08254e12615d5e7da38c345613c7cd8427ec7fe8fd33f19276ca0b7"
+            "file": "uploads/8bb64a7eac5c4999b762309966378296.eml",
+            "sha256": "c08fa8a1683ab107afcb9cdfcaafeaaa91e72d68622342cd8bc045b05f74606e"
+        },
+        "sender_verification": {
+            "status": "TRUSTED",
+            "domain": "hdfcbank.bank.in",
+            "method": "DMARC",
+            "reason": "DMARC passed for hdfcbank.bank.in, a reserved .bank.in domain (RBI-regulated banks only)."
         },
         "ml_detection": {
-            "prediction": "spam",
-            "confidence": 0.8946497309658231,
-            "spam_probability": 0.8946497309658231,
-            "ham_probability": 0.10535026903417688
+            "prediction": "ham",
+            "model_prediction": "phishing",
+            "confidence": 0.9938049775724314,
+            "spam_probability": 0.006119613355277303,
+            "phishing_probability": 0.9938049775724314,
+            "threat_probability": 0.9999245909277087,
+            "ham_probability": 7.540907229132808e-05,
+            "low_information": false
         },
         "threat_intelligence": {
             "status": "NOT_CONFIGURED",
-            "ips_checked": 2,
-            "domains_checked": 10,
-            "urls_checked": 6
+            "ips_checked": 0,
+            "domains_checked": 2,
+            "urls_checked": 0
         },
         "risk": {
-            "score": 58,
-            "verdict": "MEDIUM RISK",
+            "score": 0,
+            "verdict": "MINIMAL RISK",
             "reasons": [
                 {
-                    "source": "ML",
-                    "type": "ELEVATED_SPAM_PROBABILITY",
-                    "points": 28,
-                    "description": "ML model assigned 89.46% spam probability."
-                },
-                {
-                    "source": "SECURITY_ANALYZER",
-                    "type": "FROM_RETURN_PATH_MISMATCH",
-                    "points": 15,
-                    "description": "From and Return-Path domains do not match."
-                },
-                {
-                    "source": "SENDER_CONSISTENCY",
-                    "type": "FROM_RETURN_PATH_MISMATCH",
-                    "points": 15,
-                    "description": "From and Return-Path domains do not match."
+                    "source": "SENDER_VERIFICATION",
+                    "type": "TRUSTED_SENDER",
+                    "points": 0,
+                    "description": "DMARC passed for hdfcbank.bank.in, a reserved .bank.in domain (RBI-regulated banks only). ML phishing score (99.38%) not applied."
                 }
             ]
         }

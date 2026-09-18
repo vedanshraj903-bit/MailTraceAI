@@ -1,0 +1,11 @@
+Authentication-Results: mx.google.com;
+       dkim=pass header.i=@amazon.in header.s=s1;
+       spf=pass smtp.mailfrom=amazon.in;
+       dmarc=pass (p=REJECT sp=REJECT dis=NONE) header.from=amazon.in
+From: "Amazon.in" <alerts@amazon.in>
+To: customer@example.com
+Subject: Your Amazon.in order has shipped
+Date: Fri, 18 Sep 2026 10:12:00 +0530
+Content-Type: text/plain; charset=utf-8
+
+Hello, your package with 2 items has shipped and will arrive on Monday. You can track your package from Your Orders. Thank you for shopping with us.

@@ -1,0 +1,13 @@
+From: "HDFC Bank" <alerts@hdfcbank-kyc-update.info>
+Reply-To: support@secure-verify-mail.ru
+To: customer@example.com
+Subject: Urgent: Your HDFC NetBanking account will be blocked today
+Date: Fri, 18 Sep 2026 10:12:00 +0530
+MIME-Version: 1.0
+Content-Type: text/html; charset=utf-8
+
+<html><body><p>Dear Customer,</p>
+<p>Your KYC details are not updated. Your NetBanking account will be <b>suspended within 24 hours</b>.</p>
+<p>Please update your PAN and Aadhaar immediately to avoid blocking of your account.</p>
+<p><a href="http://hdfc-netbanking-kyc.verify-login.xyz/update">Click here to update KYC</a></p>
+<p>Regards,<br>HDFC Bank Team</p></body></html>

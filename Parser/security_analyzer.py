@@ -1,5 +1,6 @@
 from email import policy
 from email.parser import BytesParser
+from email.utils import parsedate_to_datetime
 from pathlib import Path
 from datetime import datetime, timezone
 import re
@@ -62,6 +63,29 @@ BRACKETED_IP_PATTERN = re.compile(
 )
 
 IP_TOKEN_PATTERN = re.compile(r"[0-9A-Fa-f:.]{7,}")
+
+
+def extract_utc_offset(date_header):
+    """
+    Return the sender's clock offset from the Date header
+    as "+05:30", or None when it cannot be parsed. Mail
+    providers usually keep this even when they strip the
+    sender's IP, so it is a (spoofable) hint to their region.
+    """
+
+    try:
+        offset = parsedate_to_datetime(str(date_header)).utcoffset()
+    except (TypeError, ValueError, IndexError):
+        return None
+
+    if offset is None:
+        return None
+
+    minutes = int(offset.total_seconds() // 60)
+    sign = "+" if minutes >= 0 else "-"
+    hours, minutes = divmod(abs(minutes), 60)
+
+    return f"{sign}{hours:02d}:{minutes:02d}"
 
 
 def parse_ip(candidate):
@@ -577,7 +601,9 @@ def analyze_email(email_file):
 
             "message_id": message_id,
 
-            "date": date_header
+            "date": date_header,
+
+            "date_utc_offset": extract_utc_offset(date_header)
         },
 
         "routing": {
@@ -600,6 +626,7 @@ def analyze_email(email_file):
                 }
 
                 for ip in ips
+                if classify_ip(ip) != "INVALID"
             ],
 
             "public_infrastructure_ips":

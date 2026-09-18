@@ -1,0 +1,203 @@
+{
+  "trained_at": "2026-09-18T08:53:40.629696+00:00",
+  "training_seconds": 106.2,
+  "labels": [
+    "ham",
+    "spam",
+    "phishing"
+  ],
+  "dataset": {
+    "file": "datasets/mailtrace_dataset.csv",
+    "rows": 6000,
+    "per_label": {
+      "phishing": 2000,
+      "ham": 2000,
+      "spam": 2000
+    },
+    "per_source": {
+      "kaggle_nigerian_fraud": 1000,
+      "kaggle_nazario": 1000,
+      "kaggle_ceas_08": 1014,
+      "kaggle_ling": 958,
+      "kaggle_enron": 1014,
+      "kaggle_spamassasin": 1014
+    },
+    "train_rows": 4800,
+    "test_rows": 1200
+  },
+  "search": {
+    "cv_folds": 5,
+    "scoring": "f1_macro",
+    "best_params": {
+      "classifier__C": "32.0",
+      "features__words__ngram_range": "(1, 2)"
+    },
+    "best_cv_macro_f1": 0.9720558608698207
+  },
+  "test_results": {
+    "accuracy": 0.9675,
+    "macro_f1": 0.9674416489575407,
+    "report": {
+      "ham": {
+        "precision": 0.9771573604060914,
+        "recall": 0.9625,
+        "f1-score": 0.9697732997481109,
+        "support": 400.0
+      },
+      "spam": {
+        "precision": 0.9595959595959596,
+        "recall": 0.95,
+        "f1-score": 0.9547738693467337,
+        "support": 400.0
+      },
+      "phishing": {
+        "precision": 0.9658536585365853,
+        "recall": 0.99,
+        "f1-score": 0.9777777777777777,
+        "support": 400.0
+      },
+      "accuracy": 0.9675,
+      "macro avg": {
+        "precision": 0.9675356595128788,
+        "recall": 0.9674999999999999,
+        "f1-score": 0.9674416489575407,
+        "support": 1200.0
+      },
+      "weighted avg": {
+        "precision": 0.9675356595128788,
+        "recall": 0.9675,
+        "f1-score": 0.9674416489575409,
+        "support": 1200.0
+      }
+    },
+    "confusion_matrix": {
+      "labels": [
+        "ham",
+        "spam",
+        "phishing"
+      ],
+      "matrix": [
+        [
+          385,
+          14,
+          1
+        ],
+        [
+          7,
+          380,
+          13
+        ],
+        [
+          2,
+          2,
+          396
+        ]
+      ]
+    },
+    "one_vs_rest_auc": {
+      "ham": {
+        "roc_auc": 0.9980625000000001,
+        "pr_auc": 0.9963251712664634
+      },
+      "spam": {
+        "roc_auc": 0.993771875,
+        "pr_auc": 0.9905338426311383
+      },
+      "phishing": {
+        "roc_auc": 0.997021875,
+        "pr_auc": 0.99363598389859
+      }
+    },
+    "ham_false_positive_rate": 0.0375,
+    "accuracy_per_source": {
+      "kaggle_ceas_08": {
+        "correct": 188,
+        "total": 196,
+        "accuracy": 0.9592
+      },
+      "kaggle_enron": {
+        "correct": 187,
+        "total": 201,
+        "accuracy": 0.9303
+      },
+      "kaggle_ling": {
+        "correct": 197,
+        "total": 199,
+        "accuracy": 0.9899
+      },
+      "kaggle_nazario": {
+        "correct": 200,
+        "total": 204,
+        "accuracy": 0.9804
+      },
+      "kaggle_nigerian_fraud": {
+        "correct": 196,
+        "total": 196,
+        "accuracy": 1.0
+      },
+      "kaggle_spamassasin": {
+        "correct": 193,
+        "total": 204,
+        "accuracy": 0.9461
+      }
+    }
+  },
+  "top_features": {
+    "ham": [
+      " > ",
+      "the",
+      " . ",
+      "wrote",
+      "subject re",
+      " , ",
+      "on",
+      "re",
+      " : ",
+      "meeting",
+      "university",
+      "thanks",
+      "713",
+      "of",
+      "language"
+    ],
+    "phishing": [
+      "emailtoken",
+      "account",
+      "your",
+      "dear",
+      "samba",
+      "your account",
+      "bank",
+      "my",
+      "ount",
+      "e. ",
+      "unt",
+      "count",
+      "d. ",
+      "s. ",
+      "your "
+    ],
+    "spam": [
+      " ! ",
+      "re from",
+      " . ",
+      "from body",
+      "http",
+      "you",
+      " $ ",
+      "love",
+      " * ",
+      "watch",
+      "men",
+      "here",
+      "free",
+      " % ",
+      "life"
+    ]
+  },
+  "environment": {
+    "python": "3.13.3",
+    "scikit_learn": "1.9.1",
+    "numpy": "2.5.3"
+  }
+}

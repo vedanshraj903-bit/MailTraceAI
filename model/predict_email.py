@@ -1,8 +1,22 @@
+"""
+Classify one email file with the trained MailTraceAI model.
+
+Usage:
+    python model/predict_email.py path/to/email.eml
+    python model/predict_email.py            # defaults to samples/spam_test.eml
+"""
+
+import sys
 from email import policy
 from email.parser import BytesParser
 from pathlib import Path
 
 import joblib
+
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+
+from features import build_model_text, extract_fields  # noqa: E402
+from verdict import label_from_probabilities  # noqa: E402
 
 
 # ============================================================
@@ -12,144 +26,67 @@ import joblib
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 MODEL_FILE = BASE_DIR / "model" / "mailtraceai_detector.joblib"
-EMAIL_FILE = BASE_DIR / "samples" / "spam_test"
+
+DEFAULT_EMAIL = BASE_DIR / "samples" / "spam_test.eml"
 
 
 # ============================================================
-# 2. LOAD TRAINED MODEL
+# 2. CLASSIFY
 # ============================================================
 
-print("=" * 60)
-print("MAILTRACEAI - EMAIL THREAT DETECTION")
-print("=" * 60)
+def classify(email_file, model):
+    with open(email_file, "rb") as file:
+        message = BytesParser(policy=policy.default).parse(file)
 
-print("\nLoading trained model...")
+    fields = extract_fields(message)
 
-model = joblib.load(MODEL_FILE)
+    # Same conversion the model was trained on.
+    email_text = build_model_text(**fields)
 
-print("Model loaded successfully.")
+    probabilities = dict(zip(
+        model.classes_,
+        model.predict_proba([email_text])[0],
+    ))
 
+    prediction = label_from_probabilities(
+        probabilities.get("phishing", 0.0),
+        probabilities.get("spam", 0.0),
+    )
 
-# ============================================================
-# 3. READ EMAIL
-# ============================================================
-
-with open(EMAIL_FILE, "rb") as file:
-    message = BytesParser(
-        policy=policy.default
-    ).parse(file)
-
-
-# ============================================================
-# 4. EXTRACT EMAIL INFORMATION
-# ============================================================
-
-subject = message.get("Subject", "")
-sender = message.get("From", "")
-reply_to = message.get("Reply-To", "")
-
-body = ""
+    return fields, prediction, probabilities
 
 
-if message.is_multipart():
-
-    for part in message.walk():
-
-        if part.get_content_type() == "text/plain":
-
-            try:
-                body += part.get_content()
-
-            except Exception:
-                pass
-
-else:
-
-    try:
-        body = message.get_content()
-
-    except Exception:
-        pass
+def risk_level(prediction):
+    return {"phishing": "HIGH", "spam": "MEDIUM"}.get(prediction, "LOW")
 
 
 # ============================================================
-# 5. CREATE THE SAME TEXT FORMAT USED DURING TRAINING
+# 3. MAIN
 # ============================================================
 
-email_text = (
-    f"SUBJECT: {subject}\n"
-    f"FROM: {sender}\n"
-    f"REPLY-TO: {reply_to}\n"
-    f"BODY: {body}"
-)
+def main():
+    email_file = Path(sys.argv[1]) if len(sys.argv) > 1 else DEFAULT_EMAIL
+
+    print("=" * 60)
+    print("MAILTRACEAI - EMAIL THREAT DETECTION")
+    print("=" * 60)
+
+    model = joblib.load(MODEL_FILE)
+
+    fields, prediction, probabilities = classify(email_file, model)
+
+    print(f"\nFile      : {email_file}")
+    print(f"From      : {fields['sender']}")
+    print(f"Subject   : {fields['subject']}")
+
+    print(f"\nPrediction: {prediction.upper()}")
+
+    print(f"Phishing probability: {probabilities.get('phishing', 0.0) * 100:.2f}%")
+
+    print(f"\nRisk Level: {risk_level(prediction)}")
+
+    print("=" * 60)
 
 
-# ============================================================
-# 6. RUN THE MODEL
-# ============================================================
-
-prediction = model.predict([email_text])[0]
-
-probabilities = model.predict_proba([email_text])[0]
-
-classes = model.classes_
-
-
-# ============================================================
-# 7. FIND CONFIDENCE
-# ============================================================
-
-prediction_index = list(classes).index(prediction)
-
-confidence = probabilities[prediction_index]
-
-
-# ============================================================
-# 8. DISPLAY RESULT
-# ============================================================
-
-print("\n" + "=" * 60)
-print("ANALYSIS RESULT")
-print("=" * 60)
-
-print("\nFrom:")
-print(sender)
-
-print("\nSubject:")
-print(subject)
-
-print("\nPrediction:")
-print(prediction.upper())
-
-print("\nConfidence:")
-print(f"{confidence * 100:.2f}%")
-
-
-# ============================================================
-# 9. SIMPLE RISK LEVEL
-# ============================================================
-
-if prediction == "spam":
-
-    if confidence >= 0.90:
-        risk = "HIGH"
-
-    elif confidence >= 0.70:
-        risk = "MEDIUM"
-
-    else:
-        risk = "LOW"
-
-else:
-
-    if confidence >= 0.90:
-        risk = "LOW"
-
-    else:
-        risk = "MEDIUM"
-
-
-print("\nRisk Level:")
-print(risk)
-
-print("\n" + "=" * 60)
+if __name__ == "__main__":
+    main()

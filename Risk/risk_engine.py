@@ -6,6 +6,9 @@ from joblib import load
 
 from Parser.email_parser import parse_email
 from Parser.security_analyzer import analyze_email
+from model.features import MIN_BODY_CHARS, body_length, build_model_text
+from model.verdict import label_from_probabilities
+from Risk.trusted_senders import check_sender
 
 
 # ============================================================
@@ -45,21 +48,10 @@ def load_model():
 # ============================================================
 
 def build_ml_input(parsed_email):
-
-    subject = (
-        parsed_email.get("subject")
-        or ""
-    )
-
-    sender = (
-        parsed_email.get("from")
-        or ""
-    )
-
-    reply_to = (
-        parsed_email.get("reply_to")
-        or ""
-    )
+    """
+    Must match training exactly, so it goes through the same
+    model/features.py function used by model/build_dataset.py.
+    """
 
     body_data = (
         parsed_email.get("body")
@@ -67,31 +59,19 @@ def build_ml_input(parsed_email):
     )
 
     if isinstance(body_data, dict):
-
-        body = (
-            body_data.get("plain_text")
-            or ""
-        )
-
-        html_body = (
-            body_data.get("html")
-            or ""
-        )
-
+        plain_text = body_data.get("plain_text") or ""
+        html = body_data.get("html") or ""
     else:
+        plain_text = str(body_data)
+        html = ""
 
-        body = str(body_data)
-        html_body = ""
-
-    email_text = (
-        f"SUBJECT: {subject}\n"
-        f"FROM: {sender}\n"
-        f"REPLY-TO: {reply_to}\n"
-        f"BODY: {body}\n"
-        f"HTML: {html_body}"
+    return build_model_text(
+        subject=parsed_email.get("subject") or "",
+        sender=parsed_email.get("from") or "",
+        reply_to=parsed_email.get("reply_to") or "",
+        plain_text=plain_text,
+        html=html,
     )
-
-    return email_text
 
 
 # ============================================================
@@ -135,15 +115,39 @@ def run_ml_detection(parsed_email, model):
         )
     )
 
+    phishing_probability = float(
+        class_probabilities.get(
+            "phishing",
+            0
+        )
+    )
+
+    # Anything that is not a genuine email.
+    threat_probability = 1.0 - ham_probability
+
+    # Too little text to judge (e.g. a one-word body): the model
+    # never saw emails like this in training.
+    low_information = body_length(email_text) < MIN_BODY_CHARS
+
     ml_confidence = float(
         max(probabilities)
     )
 
     return {
-        "prediction": str(prediction),
+        # Shown label from the phishing / spam probabilities
+        # (model/verdict.py). model_prediction is the model's own
+        # most-likely class, kept for reference.
+        "prediction": label_from_probabilities(
+            phishing_probability,
+            spam_probability
+        ),
+        "model_prediction": str(prediction),
         "confidence": ml_confidence,
         "spam_probability": spam_probability,
-        "ham_probability": ham_probability
+        "phishing_probability": phishing_probability,
+        "threat_probability": threat_probability,
+        "ham_probability": ham_probability,
+        "low_information": low_information
     }
 
 
@@ -277,6 +281,17 @@ def calculate_risk(
         "prediction"
     ]
 
+    # Sender verification runs for every email. Only a TRUSTED
+    # sender (authenticated bank / payments domain) overrides the
+    # wording-based ML verdict (see Risk/trusted_senders.py).
+    # Other checks still run.
+    sender_verification = check_sender(security_data)
+
+    trusted_sender = sender_verification["status"] == "TRUSTED"
+
+    if trusted_sender:
+        prediction = "ham"
+
     ml_confidence = ml_detection[
         "confidence"
     ]
@@ -287,6 +302,14 @@ def calculate_risk(
 
     ham_probability = ml_detection[
         "ham_probability"
+    ]
+
+    phishing_probability = ml_detection[
+        "phishing_probability"
+    ]
+
+    threat_probability = ml_detection[
+        "threat_probability"
     ]
 
     # --------------------------------------------------------
@@ -301,71 +324,80 @@ def calculate_risk(
     # 1. ML EVIDENCE
     # ========================================================
 
-    if spam_probability >= 0.90:
+    # Points follow the shown label (model/verdict.py). A confident
+    # phishing verdict alone reaches MEDIUM RISK; one independent
+    # red flag on top of it reaches HIGH RISK. Spam is unwanted but
+    # rarely dangerous, so it only adds a little.
 
-        points = 35
+    ml_points = {
+        "phishing": (
+            (60, "HIGH_PHISHING_PROBABILITY")
+            if phishing_probability >= 0.90
+            else (50, "ELEVATED_PHISHING_PROBABILITY")
+        ),
+        "spam": (15, "SPAM_CLASSIFICATION"),
+        "ham": (0, None),
+    }
 
-        risk_score += points
+    if trusted_sender:
+
+        risk_reasons.append({
+
+            "source": "SENDER_VERIFICATION",
+
+            "type":
+                "TRUSTED_SENDER",
+
+            "points":
+                0,
+
+            "description":
+                sender_verification["reason"]
+                + f" ML phishing score "
+                  f"({phishing_probability * 100:.2f}%) not applied."
+        })
+
+    elif ml_detection["low_information"]:
 
         risk_reasons.append({
 
             "source": "ML",
 
             "type":
-                "HIGH_SPAM_PROBABILITY",
+                "ML_INSUFFICIENT_TEXT",
 
             "points":
-                points,
+                0,
 
             "description":
-                f"ML model assigned "
-                f"{spam_probability * 100:.2f}% "
-                f"spam probability."
+                "Email body is too short for the ML model to "
+                "judge reliably; ML score not applied."
         })
 
-    elif spam_probability >= 0.70:
+    else:
 
-        points = 28
+        points, reason_type = ml_points[prediction]
 
-        risk_score += points
+        if points:
 
-        risk_reasons.append({
+            risk_score += points
 
-            "source": "ML",
+            risk_reasons.append({
 
-            "type":
-                "ELEVATED_SPAM_PROBABILITY",
+                "source": "ML",
 
-            "points":
-                points,
+                "type":
+                    reason_type,
 
-            "description":
-                f"ML model assigned "
-                f"{spam_probability * 100:.2f}% "
-                f"spam probability."
-        })
+                "points":
+                    points,
 
-    elif spam_probability >= 0.50:
-
-        points = 15
-
-        risk_score += points
-
-        risk_reasons.append({
-
-            "source": "ML",
-
-            "type":
-                "MODERATE_SPAM_PROBABILITY",
-
-            "points":
-                points,
-
-            "description":
-                f"ML model assigned "
-                f"{spam_probability * 100:.2f}% "
-                f"spam probability."
-        })
+                "description":
+                    f"ML model classifies this email as "
+                    f"{prediction} "
+                    f"(phishing probability "
+                    f"{phishing_probability * 100:.2f}%)."
+            })
 
     # ========================================================
     # 2. SECURITY SIGNALS
@@ -393,13 +425,8 @@ def calculate_risk(
 
             points = 10
 
-        elif signal_type == "FROM_REPLY_TO_MISMATCH":
-
-            points = 20
-
-        elif signal_type == "FROM_RETURN_PATH_MISMATCH":
-
-            points = 15
+        # FROM_REPLY_TO_MISMATCH / FROM_RETURN_PATH_MISMATCH are
+        # scored once, in SENDER CONSISTENCY below.
 
         if points > 0:
 
@@ -443,42 +470,21 @@ def calculate_risk(
         "dmarc"
     )
 
-    # --------------------------------------------------------
-    # SPF
-    # --------------------------------------------------------
+    # Missing results (NOT_AVAILABLE) score nothing: many exported
+    # emails simply lack an Authentication-Results header.
 
-    if spf in [
-        "FAIL",
-        "SOFTFAIL",
-        "NEUTRAL"
-    ]:
+    auth_points = [
+        ("SPF", spf, {"FAIL": 15, "SOFTFAIL": 5}),
+        ("DKIM", dkim, {"FAIL": 10}),
+        ("DMARC", dmarc, {"FAIL": 20}),
+    ]
 
-        points = 10
+    for mechanism, result, table in auth_points:
 
-        risk_score += points
+        points = table.get(result, 0)
 
-        risk_reasons.append({
-
-            "source":
-                "AUTHENTICATION",
-
-            "type":
-                "SPF_" + spf,
-
-            "points":
-                points,
-
-            "description":
-                f"SPF result is {spf}."
-        })
-
-    # --------------------------------------------------------
-    # DKIM
-    # --------------------------------------------------------
-
-    if dkim == "FAIL":
-
-        points = 10
+        if not points:
+            continue
 
         risk_score += points
 
@@ -488,39 +494,20 @@ def calculate_risk(
                 "AUTHENTICATION",
 
             "type":
-                "DKIM_FAIL",
+                f"{mechanism}_{result}",
 
             "points":
                 points,
 
             "description":
-                "DKIM authentication failed."
+                f"{mechanism} result is {result}."
         })
 
-    # --------------------------------------------------------
-    # DMARC
-    # --------------------------------------------------------
-
-    if dmarc == "FAIL":
-
-        points = 15
-
-        risk_score += points
-
-        risk_reasons.append({
-
-            "source":
-                "AUTHENTICATION",
-
-            "type":
-                "DMARC_FAIL",
-
-            "points":
-                points,
-
-            "description":
-                "DMARC authentication failed."
-        })
+    authentication_failed = (
+        spf in ("FAIL", "SOFTFAIL")
+        or dkim == "FAIL"
+        or dmarc == "FAIL"
+    )
 
     # ========================================================
     # 4. SENDER CONSISTENCY
@@ -541,7 +528,7 @@ def calculate_risk(
 
     if from_reply_to == "MISMATCH":
 
-        points = 20
+        points = 15
 
         risk_score += points
 
@@ -557,13 +544,16 @@ def calculate_risk(
                 points,
 
             "description":
-                "From and Reply-To "
-                "addresses do not match."
+                "Replies go to a different domain than the sender's."
         })
+
+    # A different Return-Path domain is normal for genuine bulk mail
+    # (banks and newsletters send through Amazon SES, SendGrid, ...),
+    # so it only counts when authentication also failed.
 
     if from_return_path == "MISMATCH":
 
-        points = 15
+        points = 10 if authentication_failed else 0
 
         risk_score += points
 
@@ -579,8 +569,13 @@ def calculate_risk(
                 points,
 
             "description":
-                "From and Return-Path "
-                "domains do not match."
+                "From and Return-Path domains do not match"
+                + (
+                    " and authentication failed."
+                    if authentication_failed
+                    else " (common for bulk mail senders; "
+                         "not scored on its own)."
+                )
         })
 
     # ========================================================
@@ -895,7 +890,7 @@ def calculate_risk(
             "MailTraceAI",
 
         "risk_engine_version":
-            "3.0",
+            "3.1",
 
         "analysis_timestamp":
             datetime.now(
@@ -917,10 +912,17 @@ def calculate_risk(
                 )
         },
 
+        "sender_verification":
+            sender_verification,
+
         "ml_detection": {
 
             "prediction":
                 prediction,
+
+            "model_prediction":
+                ml_detection["model_prediction"],
+
 
             "confidence":
                 ml_confidence,
@@ -928,8 +930,17 @@ def calculate_risk(
             "spam_probability":
                 spam_probability,
 
+            "phishing_probability":
+                phishing_probability,
+
+            "threat_probability":
+                threat_probability,
+
             "ham_probability":
-                ham_probability
+                ham_probability,
+
+            "low_information":
+                ml_detection["low_information"]
         },
 
         "threat_intelligence": {
@@ -1061,8 +1072,8 @@ def print_risk_assessment(
     )
 
     print(
-        "SPAM Probability:",
-        f"{ml['spam_probability'] * 100:.2f}%"
+        "PHISHING Probability:",
+        f"{ml['phishing_probability'] * 100:.2f}%"
     )
 
     print()

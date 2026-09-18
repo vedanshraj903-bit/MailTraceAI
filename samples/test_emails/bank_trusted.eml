@@ -1,0 +1,11 @@
+Authentication-Results: mx.google.com;
+       dkim=pass header.i=@hdfcbank.bank.in header.s=s1;
+       spf=pass smtp.mailfrom=hdfcbank.bank.in;
+       dmarc=pass (p=REJECT sp=REJECT dis=NONE) header.from=hdfcbank.bank.in
+From: "HDFC Bank InstaAlerts" <alerts@hdfcbank.bank.in>
+To: customer@example.com
+Subject: You have done a UPI txn. Check details!
+Date: Fri, 18 Sep 2026 10:12:00 +0530
+Content-Type: text/plain; charset=utf-8
+
+Dear Customer, Rs.250.00 has been debited from your account ending 1234 towards a UPI transaction. If you did not authorize this transaction, please call our toll free number immediately. Warm regards, HDFC Bank

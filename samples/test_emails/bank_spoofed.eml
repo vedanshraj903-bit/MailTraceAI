@@ -1,0 +1,11 @@
+Authentication-Results: mx.google.com;
+       dkim=fail header.i=@hdfcbank.bank.in header.s=s1;
+       spf=fail smtp.mailfrom=hdfcbank.bank.in;
+       dmarc=fail (p=REJECT sp=REJECT dis=NONE) header.from=hdfcbank.bank.in
+From: "HDFC Bank" <alerts@hdfcbank.bank.in>
+To: customer@example.com
+Subject: Your account is suspended
+Date: Fri, 18 Sep 2026 10:12:00 +0530
+Content-Type: text/plain; charset=utf-8
+
+Dear Customer, your netbanking account has been suspended due to incomplete KYC. Verify your details immediately at the secure link below to avoid permanent blocking of your account. http://hdfc-verify.example-login.xyz/kyc

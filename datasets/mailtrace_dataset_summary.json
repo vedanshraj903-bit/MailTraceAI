@@ -1,0 +1,22 @@
+{
+  "per_class_target": 2000,
+  "per_label": {
+    "ham": 2000,
+    "phishing": 2000,
+    "spam": 2000
+  },
+  "per_source": {
+    "kaggle_ceas_08": 1014,
+    "kaggle_enron": 1014,
+    "kaggle_ling": 958,
+    "kaggle_nazario": 1000,
+    "kaggle_nigerian_fraud": 1000,
+    "kaggle_spamassasin": 1014
+  },
+  "rows": 6000,
+  "seed": 42,
+  "sources": {
+    "kaggle": "https://www.kaggle.com/datasets/naserabdullahalam/phishing-email-dataset"
+  },
+  "sources_mode": "kaggle"
+}

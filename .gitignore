@@ -1,0 +1,13 @@
+# Python bytecode
+__pycache__/
+*.pyc
+
+# Raw third-party datasets (too large for GitHub; re-download per SOURCE.md)
+datasets/kaggle/
+datasets/nazario_phishing/*.mbox
+
+# Frontend
+node_modules/
+frontend/dist/
+
+.DS_Store

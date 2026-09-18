@@ -16,6 +16,12 @@ import LocationMap from "./LocationMap";
 import formatLocation, { formatCoordinates } from "./formatLocation";
 
 const API_URL = "http://127.0.0.1:8001/analyze";
+
+const SENDER_STATUS_LABELS = {
+  TRUSTED: "✓ Trusted sender",
+  AUTHENTICATED: "✓ Authenticated sender",
+  NOT_VERIFIED: "✗ Sender not verified",
+};
 const REPORT_URL = "http://127.0.0.1:8001/report";
 
 
@@ -562,6 +568,9 @@ function App() {
   const ml =
     result?.risk_assessment?.ml_detection;
 
+  const sender =
+    result?.risk_assessment?.sender_verification;
+
   const email =
     result?.parsed_email;
 
@@ -724,17 +733,41 @@ function App() {
               </div>
 
               <div className="metric-card">
-                <span>SPAM PROBABILITY</span>
+                <span>PHISHING PROBABILITY</span>
                 <strong>
-                  {ml
+                  {ml?.phishing_probability !== undefined
                     ? `${(
-                        ml.spam_probability * 100
+                        ml.phishing_probability * 100
                       ).toFixed(2)}%`
                     : "--"}
                 </strong>
               </div>
 
             </section>
+
+
+            {/* ==================================================
+                SENDER VERIFICATION
+                ================================================== */}
+
+            {sender && (
+              <section
+                className={`sender-status sender-${sender.status.toLowerCase()}`}
+              >
+                <strong>
+                  {SENDER_STATUS_LABELS[sender.status] ?? sender.status}
+                  {sender.domain && (
+                    <code>{sender.domain}</code>
+                  )}
+                  {sender.method && (
+                    <span className="sender-method">
+                      via {sender.method}
+                    </span>
+                  )}
+                </strong>
+                <p>{sender.reason}</p>
+              </section>
+            )}
 
 
             {/* ==================================================
@@ -888,6 +921,12 @@ function App() {
                 <LocationMap
                   geolocation={geolocation}
                   relayPath={relayPath}
+                  senderUtcOffset={
+                    result
+                      ?.security_analysis
+                      ?.identity
+                      ?.date_utc_offset
+                  }
                 />
 
                 <div className="table-wrapper">
