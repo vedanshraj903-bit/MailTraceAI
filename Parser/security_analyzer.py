@@ -48,6 +48,58 @@ def classify_ip(ip):
 
 
 # ============================================================
+# 2b. RECEIVED HEADER → CONNECTING IP
+# ============================================================
+#
+# A Received header reads "from <sender> (<rDNS> [<ip>]) by <receiver> ...".
+# The geolocatable hop is the connecting IP in the "from" clause;
+# IPs after "by", in "id"/"for" clauses or in the date are ignored.
+
+RECEIVED_BY_PATTERN = re.compile(r"\bby\b", re.IGNORECASE)
+
+BRACKETED_IP_PATTERN = re.compile(
+    r"\[(?:IPv6:)?([0-9A-Fa-f:.]+)\]"
+)
+
+IP_TOKEN_PATTERN = re.compile(r"[0-9A-Fa-f:.]{7,}")
+
+
+def parse_ip(candidate):
+    try:
+        return str(ipaddress.ip_address(candidate.strip("[]().;")))
+    except ValueError:
+        return None
+
+
+def extract_received_ip(received):
+    """
+    Return the connecting IP from a Received header's
+    "from" clause, or None when there is none.
+    """
+
+    header = " ".join(received.split())
+
+    if not header.lower().startswith("from"):
+        return None
+
+    from_clause = RECEIVED_BY_PATTERN.split(header, maxsplit=1)[0]
+
+    # Prefer the bracketed IP written by the receiving server.
+    for candidate in BRACKETED_IP_PATTERN.findall(from_clause):
+        ip = parse_ip(candidate)
+        if ip:
+            return ip
+
+    # Fall back to a bare IP, e.g. Outlook's "(2603:10b6:...)".
+    for candidate in IP_TOKEN_PATTERN.findall(from_clause):
+        ip = parse_ip(candidate)
+        if ip:
+            return ip
+
+    return None
+
+
+# ============================================================
 # 3. EXTRACT EMAIL ADDRESS
 # ============================================================
 
@@ -234,16 +286,6 @@ def analyze_email(email_file):
     )
 
     # --------------------------------------------------------
-    # PUBLIC INFRASTRUCTURE IPs
-    # --------------------------------------------------------
-
-    public_ips = [
-        ip
-        for ip in ips
-        if classify_ip(ip) == "PUBLIC"
-    ]
-
-    # --------------------------------------------------------
     # URL EXTRACTION
     # --------------------------------------------------------
 
@@ -375,31 +417,55 @@ def analyze_email(email_file):
     # RELAY PATH
     # --------------------------------------------------------
 
+    # One hop per Received header, oldest first. The hop
+    # number is the header's position, so headers without a
+    # connecting IP (e.g. "by"-only) leave a gap.
+
     relay_path = []
 
-    reversed_received = list(
-        reversed(received_headers)
-    )
+    for hop_number, received in enumerate(
+        reversed(received_headers),
+        start=1
+    ):
 
-    hop_number = 1
+        ip = extract_received_ip(received)
 
-    for received in reversed_received:
+        if not ip:
+            continue
 
-        hop_ips = re.findall(
-            ip_pattern,
-            received
-        )
+        relay_path.append({
+            "hop": hop_number,
+            "ip": ip,
+            "classification": classify_ip(ip),
+            "may_be_forged": "forged" in received.lower(),
+            "raw": received
+        })
 
-        for ip in hop_ips:
+    # Webmail clients often record the sender's own IP here.
+    # It precedes every Received hop, so it is hop 0.
 
-            relay_path.append({
-                "hop": hop_number,
+    for header_name in ("X-Originating-IP", "X-Sender-IP"):
+
+        ip = parse_ip(str(message.get(header_name) or ""))
+
+        if ip:
+            relay_path.insert(0, {
+                "hop": 0,
                 "ip": ip,
                 "classification": classify_ip(ip),
-                "raw": received
+                "may_be_forged": False,
+                "raw": f"{header_name}: {message.get(header_name)}"
             })
+            break
 
-            hop_number += 1
+    # Public infrastructure = public relay IPs in hop order.
+    # IPs from the body or URLs are indicators, not routing.
+
+    public_ips = list(dict.fromkeys(
+        hop["ip"]
+        for hop in relay_path
+        if hop["classification"] == "PUBLIC"
+    ))
 
     # --------------------------------------------------------
     # SECURITY SIGNALS

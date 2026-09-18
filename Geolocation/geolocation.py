@@ -1,4 +1,3 @@
-import os
 import json
 import ipaddress
 import urllib.request
@@ -6,24 +5,34 @@ import urllib.error
 
 
 # ============================================================
-# IPINFO CONFIGURATION
+# IP-API CONFIGURATION
+# ============================================================
+#
+# ip-api.com free tier: no token required, HTTP only,
+# 15 batch requests/minute, up to 100 IPs per batch,
+# non-commercial use only.
+
+IP_API_BATCH_URL = "http://ip-api.com/batch"
+
+IP_API_FIELDS = (
+    "status,message,query,"
+    "continent,continentCode,country,countryCode,"
+    "regionName,city,zip,lat,lon,timezone,"
+    "isp,org,as"
+)
+
+IP_API_BATCH_LIMIT = 100
+
+
+# ============================================================
+# VALIDATE ONE IP
 # ============================================================
 
-IPINFO_API_TOKEN = os.getenv("IPINFO_API_TOKEN")
-
-
-# ============================================================
-# GEOLocate ONE IP
-# ============================================================
-
-def geolocate_ip(ip):
+def validate_ip(ip):
     """
-    Geolocate one public IP address using IPinfo Lite.
+    Return an error result for invalid / non-public IPs,
+    or None when the IP can be geolocated.
     """
-
-    # --------------------------------------------------------
-    # 1. Validate IP address
-    # --------------------------------------------------------
 
     try:
         ip_object = ipaddress.ip_address(ip)
@@ -35,11 +44,6 @@ def geolocate_ip(ip):
             "error": "Invalid IP address."
         }
 
-
-    # --------------------------------------------------------
-    # 2. Reject non-public IP addresses
-    # --------------------------------------------------------
-
     if not ip_object.is_global:
         return {
             "ip": ip,
@@ -47,112 +51,148 @@ def geolocate_ip(ip):
             "error": "Only public IP addresses are geolocated."
         }
 
-
-    # --------------------------------------------------------
-    # 3. Check API token
-    # --------------------------------------------------------
-
-    if not IPINFO_API_TOKEN:
-        return {
-            "ip": ip,
-            "status": "NOT_CONFIGURED",
-            "error": "IPinfo API token is not configured."
-        }
+    return None
 
 
-    # --------------------------------------------------------
-    # 4. Create IPinfo API request
-    # --------------------------------------------------------
+# ============================================================
+# CONVERT IP-API RESPONSE INTO MAILTRACEAI FORMAT
+# ============================================================
 
-    url = f"https://api.ipinfo.io/lite/{ip}"
+def convert_result(ip, data):
 
-    request = urllib.request.Request(
-        url,
-        headers={
-            "Authorization": f"Bearer {IPINFO_API_TOKEN}"
-        },
-        method="GET"
-    )
-
-
-    # --------------------------------------------------------
-    # 5. Send request to IPinfo
-    # --------------------------------------------------------
-
-    try:
-
-        with urllib.request.urlopen(request, timeout=10) as response:
-
-            response_data = response.read().decode("utf-8")
-
-            data = json.loads(response_data)
-
-
-    except urllib.error.HTTPError as error:
-
+    if data.get("status") != "success":
         return {
             "ip": ip,
             "status": "API_ERROR",
-            "error": f"IPinfo returned HTTP {error.code}."
+            "error": data.get("message", "Lookup failed.")
         }
 
-
-    except urllib.error.URLError as error:
-
-        return {
-            "ip": ip,
-            "status": "NETWORK_ERROR",
-            "error": str(error.reason)
-        }
-
-
-    except json.JSONDecodeError:
-
-        return {
-            "ip": ip,
-            "status": "INVALID_RESPONSE",
-            "error": "IPinfo returned invalid JSON."
-        }
-
-
-    # --------------------------------------------------------
-    # 6. Convert IPinfo response into MailTraceAI format
-    # --------------------------------------------------------
+    # "as" looks like "AS15169 Google LLC"
+    as_parts = (data.get("as") or "").split(" ", 1)
+    asn = as_parts[0] if as_parts[0].startswith("AS") else None
+    as_name = as_parts[1] if asn and len(as_parts) > 1 else None
 
     return {
-        "ip": data.get("ip", ip),
+        "ip": data.get("query", ip),
         "status": "SUCCESS",
         "country": data.get("country"),
-        "country_code": data.get("country_code"),
+        "country_code": data.get("countryCode"),
         "continent": data.get("continent"),
-        "continent_code": data.get("continent_code"),
-        "asn": data.get("asn"),
-        "asn_name": data.get("as_name"),
-        "asn_domain": data.get("as_domain"),
-        "source": "IPinfo Lite"
+        "continent_code": data.get("continentCode"),
+        "region": data.get("regionName"),
+        "city": data.get("city"),
+        "postal_code": data.get("zip"),
+        "latitude": data.get("lat"),
+        "longitude": data.get("lon"),
+        "timezone": data.get("timezone"),
+        "isp": data.get("isp"),
+        "organization": data.get("org"),
+        "asn": asn,
+        "asn_name": as_name or data.get("isp"),
+        "asn_domain": None,
+        "source": "ip-api.com"
     }
 
 
 # ============================================================
-# GEOLocate MULTIPLE IPs
+# QUERY IP-API FOR A BATCH OF IPs
+# ============================================================
+
+def query_batch(ips):
+    """
+    Send up to 100 IPs to ip-api.com in one request.
+    Returns a list of raw responses in the same order,
+    or raises the underlying error.
+    """
+
+    payload = json.dumps(
+        [{"query": ip} for ip in ips]
+    ).encode("utf-8")
+
+    request = urllib.request.Request(
+        f"{IP_API_BATCH_URL}?fields={IP_API_FIELDS}",
+        data=payload,
+        headers={"Content-Type": "application/json"},
+        method="POST"
+    )
+
+    with urllib.request.urlopen(request, timeout=10) as response:
+        return json.loads(response.read().decode("utf-8"))
+
+
+# ============================================================
+# GEOLOCATE MULTIPLE IPs
 # ============================================================
 
 def geolocate_ips(ips):
     """
     Geolocate multiple IP addresses.
 
-    Each IP is processed using geolocate_ip().
+    Invalid and non-public IPs are rejected locally;
+    public IPs are resolved in batches via ip-api.com.
+    Output order matches input order.
     """
 
-    results = []
+    results = [validate_ip(ip) for ip in ips]
 
-    for ip in ips:
+    pending = [
+        index for index, result in enumerate(results)
+        if result is None
+    ]
 
-        result = geolocate_ip(ip)
+    for start in range(0, len(pending), IP_API_BATCH_LIMIT):
 
-        results.append(result)
+        chunk = pending[start:start + IP_API_BATCH_LIMIT]
+        chunk_ips = [ips[index] for index in chunk]
+
+        try:
+            responses = query_batch(chunk_ips)
+
+        except urllib.error.HTTPError as error:
+            failure = {
+                "status": "API_ERROR",
+                "error": f"ip-api.com returned HTTP {error.code}."
+            }
+            responses = None
+
+        except urllib.error.URLError as error:
+            failure = {
+                "status": "NETWORK_ERROR",
+                "error": str(error.reason)
+            }
+            responses = None
+
+        except (json.JSONDecodeError, TimeoutError):
+            failure = {
+                "status": "INVALID_RESPONSE",
+                "error": "ip-api.com returned an invalid response."
+            }
+            responses = None
+
+        for position, index in enumerate(chunk):
+
+            ip = ips[index]
+
+            if responses is None:
+                results[index] = {"ip": ip, **failure}
+            elif position >= len(responses):
+                results[index] = {
+                    "ip": ip,
+                    "status": "INVALID_RESPONSE",
+                    "error": "Missing result from ip-api.com."
+                }
+            else:
+                results[index] = convert_result(ip, responses[position])
 
     return results
+
+
+def geolocate_ip(ip):
+    """
+    Geolocate one IP address.
+    """
+
+    return geolocate_ips([ip])[0]
 
 
 # ============================================================

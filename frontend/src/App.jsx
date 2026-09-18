@@ -12,6 +12,9 @@ import {
 import "@xyflow/react/dist/style.css";
 import "./App.css";
 
+import LocationMap from "./LocationMap";
+import formatLocation from "./formatLocation";
+
 const API_URL = "http://127.0.0.1:8001/analyze";
 const REPORT_URL = "http://127.0.0.1:8001/report";
 
@@ -565,6 +568,12 @@ function App() {
   const geolocation =
     result?.geolocation || [];
 
+  const relayPath =
+    result
+      ?.security_analysis
+      ?.routing
+      ?.relay_path || [];
+
   const signals =
     result
       ?.security_analysis
@@ -874,6 +883,13 @@ function App() {
 
               ) : (
 
+                <>
+
+                <LocationMap
+                  geolocation={geolocation}
+                  relayPath={relayPath}
+                />
+
                 <div className="table-wrapper">
 
                   <table>
@@ -882,7 +898,7 @@ function App() {
 
                       <tr>
                         <th>IP ADDRESS</th>
-                        <th>COUNTRY</th>
+                        <th>LOCATION</th>
                         <th>ASN</th>
                         <th>NETWORK</th>
                       </tr>
@@ -901,10 +917,7 @@ function App() {
                             </td>
 
                             <td>
-                              {item.status ===
-                              "SUCCESS"
-                                ? item.country
-                                : item.status}
+                              {formatLocation(item)}
                             </td>
 
                             <td>
@@ -925,6 +938,8 @@ function App() {
                   </table>
 
                 </div>
+
+                </>
 
               )}
 

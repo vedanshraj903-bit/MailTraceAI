@@ -287,6 +287,8 @@ def build_infrastructure_summary(analysis):
             "country": safe(item.get("country")),
             "country_code": safe(item.get("country_code")),
             "continent": safe(item.get("continent")),
+            "region": safe(item.get("region")),
+            "city": safe(item.get("city")),
             "asn": safe(item.get("asn")),
             "asn_name": safe(item.get("asn_name")),
             "asn_domain": safe(item.get("asn_domain")),
@@ -630,6 +632,8 @@ def generate_html_report(analysis):
     for item in infrastructure:
         infrastructure_rows.append([
             item["ip"],
+            item["city"],
+            item["region"],
             item["country"],
             item["country_code"],
             item["asn"],
@@ -640,6 +644,8 @@ def generate_html_report(analysis):
         infrastructure_rows,
         [
             "IP Address",
+            "City",
+            "Region",
             "Country",
             "Code",
             "ASN",
