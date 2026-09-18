@@ -15,14 +15,15 @@ import "./App.css";
 import LocationMap from "./LocationMap";
 import formatLocation, { formatCoordinates } from "./formatLocation";
 
-const API_URL = "http://127.0.0.1:8001/analyze";
+const API_BASE = import.meta.env.VITE_API_URL || "http://127.0.0.1:8001";
+const API_URL = `${API_BASE}/analyze`;
 
 const SENDER_STATUS_LABELS = {
   TRUSTED: "✓ Trusted sender",
   AUTHENTICATED: "✓ Authenticated sender",
   NOT_VERIFIED: "✗ Sender not verified",
 };
-const REPORT_URL = "http://127.0.0.1:8001/report";
+const REPORT_URL = `${API_BASE}/report`;
 
 
 /* ============================================================

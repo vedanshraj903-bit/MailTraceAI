@@ -3,6 +3,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse
 
 from pathlib import Path
+import os
 import shutil
 import uuid
 
@@ -25,6 +26,13 @@ ALLOWED_ORIGINS = [
     "http://127.0.0.1:3000",
     "http://localhost:5173",
     "http://127.0.0.1:5173",
+]
+
+# Deployed frontend origins, comma-separated (e.g. https://mailtraceai.vercel.app)
+ALLOWED_ORIGINS += [
+    origin.strip()
+    for origin in os.getenv("ALLOWED_ORIGINS", "").split(",")
+    if origin.strip()
 ]
 
 app.add_middleware(
