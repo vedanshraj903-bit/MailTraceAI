@@ -14,3 +14,7 @@ frontend/dist/
 
 # Python virtualenv
 .venv/
+.vercel
+
+# Vercel CLI project link
+.vercel/
