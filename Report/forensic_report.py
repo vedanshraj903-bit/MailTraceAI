@@ -270,6 +270,16 @@ def build_ioc_summary(analysis):
 # INFRASTRUCTURE / GEOLOCATION
 # ============================================================
 
+def format_coordinates(latitude, longitude):
+    if not isinstance(latitude, (int, float)) or not isinstance(longitude, (int, float)):
+        return "N/A"
+
+    lat = f"{abs(latitude):.4f}° {'N' if latitude >= 0 else 'S'}"
+    lon = f"{abs(longitude):.4f}° {'E' if longitude >= 0 else 'W'}"
+
+    return f"{lat}, {lon}"
+
+
 def build_infrastructure_summary(analysis):
     geolocation = normalize_list(
         analysis.get("geolocation", [])
@@ -289,6 +299,10 @@ def build_infrastructure_summary(analysis):
             "continent": safe(item.get("continent")),
             "region": safe(item.get("region")),
             "city": safe(item.get("city")),
+            "coordinates": format_coordinates(
+                item.get("latitude"),
+                item.get("longitude")
+            ),
             "asn": safe(item.get("asn")),
             "asn_name": safe(item.get("asn_name")),
             "asn_domain": safe(item.get("asn_domain")),
@@ -636,6 +650,7 @@ def generate_html_report(analysis):
             item["region"],
             item["country"],
             item["country_code"],
+            item["coordinates"],
             item["asn"],
             item["asn_name"],
         ])
@@ -648,6 +663,7 @@ def generate_html_report(analysis):
             "Region",
             "Country",
             "Code",
+            "Coordinates",
             "ASN",
             "Network",
         ],

@@ -13,7 +13,7 @@ import "@xyflow/react/dist/style.css";
 import "./App.css";
 
 import LocationMap from "./LocationMap";
-import formatLocation from "./formatLocation";
+import formatLocation, { formatCoordinates } from "./formatLocation";
 
 const API_URL = "http://127.0.0.1:8001/analyze";
 const REPORT_URL = "http://127.0.0.1:8001/report";
@@ -899,6 +899,7 @@ function App() {
                       <tr>
                         <th>IP ADDRESS</th>
                         <th>LOCATION</th>
+                        <th>COORDINATES</th>
                         <th>ASN</th>
                         <th>NETWORK</th>
                       </tr>
@@ -918,6 +919,13 @@ function App() {
 
                             <td>
                               {formatLocation(item)}
+                            </td>
+
+                            <td className="coordinates-cell">
+                              {formatCoordinates(
+                                item.latitude,
+                                item.longitude
+                              )}
                             </td>
 
                             <td>

@@ -5,13 +5,16 @@ import {
   Polyline,
   Popup,
   Tooltip,
+  useMapEvents,
 } from "react-leaflet";
+
+import { useState } from "react";
 
 import L from "leaflet";
 
 import "leaflet/dist/leaflet.css";
 
-import formatLocation from "./formatLocation";
+import formatLocation, { formatCoordinates } from "./formatLocation";
 
 
 /* ============================================================
@@ -173,6 +176,28 @@ function pinIcon(pin) {
 
 
 /* ============================================================
+   CURSOR COORDINATES
+   ============================================================ */
+
+function CursorCoordinates() {
+  const [position, setPosition] = useState(null);
+
+  useMapEvents({
+    mousemove: (event) => setPosition(event.latlng.wrap()),
+    mouseout: () => setPosition(null),
+  });
+
+  return (
+    <div className="map-cursor-coordinates">
+      {position
+        ? formatCoordinates(position.lat, position.lng)
+        : "Hover the map for coordinates"}
+    </div>
+  );
+}
+
+
+/* ============================================================
    LOCATION MAP
    ============================================================ */
 
@@ -253,6 +278,10 @@ export default function LocationMap({ geolocation, relayPath = [] }) {
               <div className="map-popup">
                 <strong>{pin.label}</strong>
 
+                <div className="map-popup-coordinates">
+                  {formatCoordinates(pin.position[0], pin.position[1])}
+                </div>
+
                 {pin.stops.map((stop) => (
                   <div key={`${stop.hop}-${stop.ip}`} className="map-popup-ip">
 
@@ -289,6 +318,8 @@ export default function LocationMap({ geolocation, relayPath = [] }) {
 
           </Marker>
         ))}
+
+        <CursorCoordinates />
 
       </MapContainer>
 
